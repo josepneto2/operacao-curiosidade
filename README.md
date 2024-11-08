@@ -1,2 +1,2 @@
-# operacaoo-curiosidade
+# operacao-curiosidade
  
