@@ -1,4 +1,5 @@
-function mudarTela() {
+function realizarLogin(event) {
+    event.preventDefault();
     window.location.href = "./app.html"
 }
 

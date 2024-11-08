@@ -5,11 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="../estilos/style.css">
+    <link rel="stylesheet" href="../estilos/tela-login.css">
 </head>
 <body>
-    <h1>login</h1>
-    <button onclick="mudarTela()">app</button>
-
+    <section class="section-login">
+        <img id="foto" src="../imagens/logo-login.png" alt="foto login">
+        <form id="login-form">
+            <input 
+                type="email" 
+                name="email" 
+                id="email"
+                placeholder="Email"
+                required
+            />
+            <input 
+                type="password" 
+                name="password" 
+                id="password"
+                placeholder="Senha"
+                required
+            />
+            <div class="container-btn">
+                <button class="btn" id="btn-login" onclick="realizarLogin(event)">Entrar</button>
+            </div>
+        </form>
+        <p class="inativo" id="aviso">*Erro: Dados incorretos ou usuário inexistente</p>
+    </section>
     <script src="../javascript/scripts.js"></script>
 </body>
 </html>

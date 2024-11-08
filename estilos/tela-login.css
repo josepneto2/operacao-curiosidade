@@ -1,0 +1,75 @@
+.section-login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 100px auto;
+    padding: 20px;
+    background-color: white;
+    width: 400px;
+    height: 400px;
+    border-radius: 5px;
+    border: 1px solid black;
+    font-size: 1.2em;
+}
+
+#foto {
+    background-color: #d3d3d3;
+    border-radius: 50%;
+    width: 150px;
+}
+
+#login-form {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 30px;
+    width: 75%;
+}
+
+#login-form > input {
+    padding: 15px;
+    border: 2px solid black;
+}
+
+.container-btn { 
+    text-align: center;
+}
+
+.btn {
+    border: none;
+    width: 100%;
+    border-radius: 5px;
+    background-color: black;
+    text-align: center;
+    padding: 15px;
+    color: white;
+    font-size: .7em;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.btn:hover {
+    background-color: rgba(0, 0, 0, 0.753);
+    cursor: pointer;
+}
+
+.btn:active {
+    background-color: rgba(0, 0, 0, 0.419);
+}
+
+#aviso {
+    font-size: 0.8em;
+    color: red;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+.ativo {
+    display: block;
+}
+
+.inativo {
+    display: none;
+}
