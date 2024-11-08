@@ -2,8 +2,63 @@
     font-family: Arial, Helvetica, sans-serif;
     margin: 0;
     padding: 0;
+    font-size: 18px;
 }
 
 body {
-    background-color: #efefef;
+    background-color: #f8f8f8;
+}
+
+li {
+    list-style-type: none;
+}
+
+a { 
+    text-decoration: none;
+    color: black;
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    width: 300px;
+    padding: 20px;
+    box-shadow: 1px 0 2px #d3d3d3;
+    height: 100vh;
+}
+
+.header-menu {
+    display: flex;  
+    text-align: center;
+    background-color: #ecf1fe;
+    height: 60px;
+    margin-bottom: 40px;
+}
+
+.header-menu > p {
+    margin: 0 20px;
+    display: flex;
+    align-items: center;
+    vertical-align: center;
+    gap: 15px;
+    font-size: 0.7em;
+}
+
+.header-menu > p > span {
+    font-size: 2.3rem;
+    font-weight: 800;
+}
+
+.opcoes-menu > li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid #d3d3d3;
+    margin: 5px;
+    padding: 5px;
+}
+
+.opcoes-menu > li:last-child {
+    border: none;
 }

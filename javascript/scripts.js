@@ -1,6 +1,6 @@
 function realizarLogin(event) {
-    event.preventDefault();
-    window.location.href = "./app.html"
+    //event.preventDefault();
+    window.location.href = "./home.html"
 }
 
 function voltarTela() {
