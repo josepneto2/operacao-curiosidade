@@ -1,0 +1,2 @@
+# operacaoo-curiosidade
+ 
