@@ -13,9 +13,9 @@ li {
     list-style-type: none;
 }
 
-a { 
-    text-decoration: none;
-    color: black;
+.app-page {
+    display: flex;
+    height: 100%vh;
 }
 
 .menu {
@@ -25,7 +25,7 @@ a {
     width: 300px;
     padding: 20px;
     box-shadow: 1px 0 2px #d3d3d3;
-    height: 100vh;
+    height: 94vh;
 }
 
 .header-menu {
@@ -55,10 +55,39 @@ a {
     align-items: center;
     gap: 10px;
     border-bottom: 1px solid #d3d3d3;
-    margin: 5px;
-    padding: 5px;
+    padding: 8px;
 }
 
 .opcoes-menu > li:last-child {
     border: none;
+}
+.opcoes-menu > li:hover {
+    cursor: pointer;
+    background-color: #ecf1fe;
+}
+
+.opcoes-menu > li:active {
+    background-color: #d3d3d3;
+}
+
+
+.conteudo {
+    display: flex;
+    flex-direction: column;
+    width: 75%;
+    padding: 20px;
+}
+
+.conteudo > .header-conteudo {
+    background-color: blue;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 5px;
+}
+
+.conteudo #foto-usuario{
+    width: 60px;
+    border-radius: 50%;
 }
