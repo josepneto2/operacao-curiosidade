@@ -1,0 +1,82 @@
+.dashboard {
+    display: flex;
+    gap: 20px;
+}
+
+.dashboard > .dashboard-card {
+    width: 100%;
+    background-color: white;
+    height: 200px;
+}
+
+.dashboard-card .info-numero {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90%;
+    font-size: 4em;
+}
+
+.dashboard-card #num-total {
+    color: #3e3e92;
+}
+
+.dashboard-card #num-mes {
+    color: #349834;
+}
+
+.dashboard-card #num-pendencia {
+    color: #c35353;
+}
+
+.dashboard-card .info-descricao {
+    text-align: end;
+    padding-right: 20px;
+    font-size: .9em;
+}
+
+.ultimos-cadastros {
+    background-color: white;
+    margin-top: 20px;
+    padding: 20px;
+    display: block;
+    height: 80%;
+}
+
+.ultimos-cadastros #titulo{
+    margin-bottom: 30px;
+}
+
+.tabela {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th {
+    text-align: start;
+    border-bottom: 1px solid #d3d3d3;
+    padding: 8px 0;
+    font-size: .8em;
+    font-weight: normal;
+    text-transform: uppercase;
+
+}
+
+th:last-child {
+    text-align: center;
+}
+
+td {
+    border-bottom: 1px solid #d3d3d3;
+    padding: 8px 0;
+    font-size: .9em;
+    color: #535353;
+}
+
+td:last-child {
+    text-align: center;
+}
+
+#status{
+    color: #d3d3d3;
+}

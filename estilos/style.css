@@ -97,7 +97,7 @@ a {
     padding: 12px;
     margin-left: 20px;
     border-radius: 5px;
-    /*width: 400px;*/
+    width: 400px;
     border: none;
     font-size: 0.7em;
     background-color: #f8f8f8;
@@ -133,7 +133,6 @@ a {
 }
 
 .conteudo .principal {
-    background-color: white;
-    height: 100%;
     margin-top: 20px;
+    color: #828282;
 }
