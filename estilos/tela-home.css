@@ -46,37 +46,3 @@
 .ultimos-cadastros #titulo{
     margin-bottom: 30px;
 }
-
-.tabela {
-    border-collapse: collapse;
-    width: 100%;
-}
-
-th {
-    text-align: start;
-    border-bottom: 1px solid #d3d3d3;
-    padding: 8px 0;
-    font-size: .8em;
-    font-weight: normal;
-    text-transform: uppercase;
-
-}
-
-th:last-child {
-    text-align: center;
-}
-
-td {
-    border-bottom: 1px solid #d3d3d3;
-    padding: 8px 0;
-    font-size: .9em;
-    color: #535353;
-}
-
-td:last-child {
-    text-align: center;
-}
-
-#status{
-    color: #d3d3d3;
-}
