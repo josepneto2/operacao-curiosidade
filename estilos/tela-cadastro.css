@@ -1,30 +1,11 @@
 .cadastros {
     background-color: white;
-    padding: 10px 20px;
+    padding: 20px;
+    min-height: 81vh;
 }
 
 .cadastros .container-titulo {
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-
-.cadastros #btn-novo-cadastro {
-    background-color: #349834;
-    color: white;
-    text-transform: uppercase;
-    padding: 10px 50px;
-    border: none;
-    border-radius: 5px;
-    font-weight: 600;
-    margin-bottom: 30px;
-}
-
-.cadastros #btn-novo-cadastro:hover {
-    cursor: pointer;
-    background-color: rgba(52, 152, 52, 0.753);
-}
-
-.cadastros #btn-novo-cadastro:active {
-    background-color: #1d541d;
 }

@@ -1,13 +1,9 @@
-.cadastros {
-    background-color: white;
-    padding: 20px;
-}
-
 .cadastros .container-titulo {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 10px;
+    margin-bottom: 20px;
 }
 
 .container-titulo #titulo {
@@ -35,4 +31,70 @@
 
 .cadastros #btn-novo-cadastro:active {
     background-color: #1d541d;
+}
+
+.container-form {
+    color: black;
+}
+
+.container-form form { 
+    display: flex;
+    flex-direction: column;
+}
+
+.container-form .titulos-form{
+    border-bottom: 2px solid #d3d3d3;
+    margin: 10px 0 20px 0;
+}
+
+.container-form input{
+    padding: 10px;
+    margin-bottom: 10px;
+
+    border: 1px solid #d3d3d3;
+}
+
+.container-form label{
+    font-size: .9em;
+}
+
+.container-form #grid-idade-email {
+    display: grid;
+    grid-template: 
+    "label-idade label-email"
+    "idade email"
+    / 1fr 3fr
+    ;
+}
+
+#label-idade {
+    grid-area: label-idade;
+}
+
+#label-email {
+    grid-area: label-email;
+    margin-left: 20px;
+}
+
+#idade {
+    grid-area: idade;
+}
+
+#email {
+    grid-area: email;
+    margin-left: 20px;
+
+}
+
+.container-form textarea{
+    resize: none;
+    border: 1px solid #d3d3d3;
+    margin-bottom: 20px;
+}
+
+.btn-area-cadastro {
+    margin: 0 auto;
+    width: 300px;
+    background-color: blue;
+    margin-top: 10px;
 }

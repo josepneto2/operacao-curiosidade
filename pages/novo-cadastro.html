@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OC - Operação Curiosidade</title>    
+    <title>OC - Novo cadastro</title>    
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"/>
     <link rel="stylesheet" href="../estilos/style.css">
+    <link rel="stylesheet" href="../estilos/tela-cadastro.css">
     <link rel="stylesheet" href="../estilos/tela-novo-cadastro.css">
 </head>
 <body class="app-page">
@@ -59,7 +60,27 @@
                 </div>
                 <div class="container-form">
                     <form action="">
-                        form
+                        <h2 class="titulos-form">1º Fatos e dados</h2>
+                        <label for="nome">Nome</label>
+                        <input type="text" name="nome" id="nome">
+                        <div id="grid-idade-email">
+                            <label for="idade" id="label-idade">Idade</label>
+                            <input type="number" name="idade" id="idade">
+                            <label for="email" id="label-email">Email</label>
+                            <input type="email" name="email" id="email">
+                        </div>
+                        <label for="endereco">Endereço</label>
+                        <input type="text" name="endereco" id="endereco">
+                        <label for="outras-info">Outras Informações</label>
+                        <textarea rows="3" name="outras-infos" id="outras-infos"></textarea>
+
+                        <h2 class="titulos-form">2º Interesses</h2>
+                        <textarea rows="5" name="outras-infos" id="outras-infos"></textarea>
+                        <h2 class="titulos-form">3º Sentimentos</h2>
+                        <textarea rows="5" name="outras-infos" id="outras-infos"></textarea>
+                        <h2 class="titulos-form">4º Valores</h2>
+                        <textarea rows="5" name="outras-infos" id="outras-infos"></textarea>
+                        <button class="btn-area-cadastro">Gravar</button>
                     </form>
                 </div>
             </div>

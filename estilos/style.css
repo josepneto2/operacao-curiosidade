@@ -24,14 +24,13 @@ a {
     display: flex;
     flex-direction: column;
     background-color: white;
-    width: 300px;
-    padding: 20px;
     box-shadow: 1px 0 2px #d3d3d3;
     width: 25%;
-    height: 95vh;
+    flex-grow: 1;
 }
 
 .header-menu {
+    margin: 20px;
     display: flex;  
     text-align: center;
     background-color: #ecf1fe;
@@ -53,6 +52,11 @@ a {
     font-weight: 800;
 }
 
+.opcoes-menu{
+    flex: 1;
+
+}
+
 .opcoes-menu > li {
     display: flex;
     align-items: center;
@@ -72,7 +76,6 @@ a {
 .opcoes-menu > li:active {
     background-color: #d3d3d3;
 }
-
 
 .conteudo {
     display: flex;
@@ -131,6 +134,8 @@ a {
 }
 
 .conteudo .principal {
+    display: flex;
+    flex-direction: column;
     margin-top: 20px;
     color: #828282;
 }
@@ -167,4 +172,24 @@ td:last-child {
 
 #status{
     color: #d3d3d3;
+}
+
+.cadastros .btn-area-cadastro {
+    background-color: #349834;
+    color: white;
+    text-transform: uppercase;
+    padding: 10px 50px;
+    border: none;
+    border-radius: 5px;
+    font-weight: 600;
+    margin-bottom: 30px;
+}
+
+.cadastros .btn-area-cadastro:hover {
+    cursor: pointer;
+    background-color: rgba(52, 152, 52, 0.753);
+}
+
+.cadastros .btn-area-cadastro:active {
+    background-color: #1d541d;
 }
