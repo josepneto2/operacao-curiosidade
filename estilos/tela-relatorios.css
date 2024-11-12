@@ -1,0 +1,21 @@
+.relatorios {
+    background-color: white;
+    padding: 20px;
+    min-height: 81vh;
+}
+
+.relatorios .btn-area-cadastro {
+    background-color: #3f5a94;
+}
+
+.relatorios .btn-area-cadastro:hover {
+    background-color: rgba(63, 90, 148, 0.755);
+}
+
+.relatorios .btn-area-cadastro:active {
+    background-color: #172a53;
+}
+
+.relatorios #lista-relatorios {
+    cursor: pointer;
+}

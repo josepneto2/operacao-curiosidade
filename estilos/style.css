@@ -54,7 +54,7 @@ a {
 
 .opcoes-menu{
     flex: 1;
-
+    margin: 0 20px;
 }
 
 .opcoes-menu > li {
@@ -140,26 +140,33 @@ a {
     color: #828282;
 }
 
+.principal .container-titulo {
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
 .tabela {
     border-collapse: collapse;
     width: 100%;
 }
 
-th {
+th, #titulo-lista {
     text-align: start;
     border-bottom: 1px solid #d3d3d3;
     padding: 8px 0;
     font-size: .8em;
     font-weight: normal;
     text-transform: uppercase;
-
 }
 
 th:last-child {
     text-align: center;
 }
 
-td {
+td, #lista-relatorios{
     border-bottom: 1px solid #d3d3d3;
     padding: 8px 0;
     font-size: .9em;
@@ -174,22 +181,30 @@ td:last-child {
     color: #d3d3d3;
 }
 
-.cadastros .btn-area-cadastro {
+.btn-area-cadastro {
     background-color: #349834;
     color: white;
     text-transform: uppercase;
-    padding: 10px 50px;
+    padding: 12px 0;
+    width: 300px;
     border: none;
-    border-radius: 5px;
+    border-radius: 7px;
     font-weight: 600;
-    margin-bottom: 30px;
 }
 
-.cadastros .btn-area-cadastro:hover {
+.btn-area-cadastro:hover {
     cursor: pointer;
-    background-color: rgba(52, 152, 52, 0.753);
+    background-color: rgba(52, 152, 52, 0.755);
 }
 
-.cadastros .btn-area-cadastro:active {
+.btn-area-cadastro:active {
     background-color: #1d541d;
+}
+
+.inativo {
+    display: none;
+}
+
+.ativo {
+    display: block;
 }

@@ -3,9 +3,3 @@
     padding: 20px;
     min-height: 81vh;
 }
-
-.cadastros .container-titulo {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
