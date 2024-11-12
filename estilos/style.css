@@ -57,6 +57,10 @@ a {
     margin: 0 20px;
 }
 
+.opcoes-menu #tela-ativa {
+    background-color: #ecf1fe;
+}
+
 .opcoes-menu > li {
     display: flex;
     align-items: center;

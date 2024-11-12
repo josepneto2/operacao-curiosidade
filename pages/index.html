@@ -7,11 +7,11 @@
     <link rel="stylesheet" href="../estilos/style.css">
     <link rel="stylesheet" href="../estilos/tela-login.css">
 </head>
-<body>
+<body onload="carregarDados()">
     <section class="section-login">
         <img id="foto" src="../imagens/logo-login.png" alt="foto login">
         <form id="login-form">
-            <input 
+            <input
                 type="email" 
                 name="email" 
                 id="email"
@@ -23,7 +23,6 @@
                 name="password" 
                 id="password"
                 placeholder="Senha"
-                required
             />
             <div class="container-btn">
                 <button class="btn" onclick="realizarLogin(event)">Entrar</button>
