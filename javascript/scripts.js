@@ -6,6 +6,12 @@ const dadosSistema = {
             email: "admin@email.com",
             senha: "admin"
         },
+        {
+            id: 2,
+            nome: "neto",
+            email: "neto@email.com",
+            senha: "123"
+        },
     ],
     listaPessoas: [
         {
@@ -86,12 +92,12 @@ function realizarLogin(event) {
     let email = emailInput.value;
     let senha = senhaInput.value;
     const usuarioCadastrado = validarLoginUsuario(email, senha);
-
+    
     if (!usuarioCadastrado) {
         aviso.classList.remove('inativo');
         return
     }
-
+    
     localStorage.setItem("usuarioLogado", JSON.stringify(usuarioCadastrado));
     window.location.href = "./home.html"
 }
@@ -101,7 +107,7 @@ function obterDadosSistema() {
     if(!dadosJson) {
         return false;
     }
-
+    
     const dadosObj = JSON.parse(dadosJson);
     return dadosObj;
 }
@@ -122,7 +128,7 @@ function validarLoginUsuario(email, senha) {
     if(!usuarioEncontrado) {
         return null;
     }
-
+    
     if (usuarioEncontrado.email === email && usuarioEncontrado.senha === senha){
         return usuarioEncontrado
     } else {
@@ -135,3 +141,106 @@ function handleLogout() {
 }
 
 btnSair.addEventListener('click', handleLogout);
+
+//----------------- TELA HOME ---------------------------
+const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
+const nomeUsuario = document.querySelector("#nome-usuario");
+const numTotal = document.querySelector("#num-total");
+let pessoas = obterPessoasSistema();
+const barraPesquisa = document.querySelector('#barra-pesquisa');
+const tabela = document.querySelector('.tabela');
+const tbody = tabela.lastElementChild;
+
+function carregarDadosHome() {
+    nomeUsuario.innerText = usuarioLogado.nome;
+    numTotal.innerText = pessoas.length;
+    carregarTabela(pessoas);
+
+    filtrarBusca();
+}
+
+function filtrarBusca() {
+    barraPesquisa.addEventListener('input', () => {
+        let termoPesquisado = barraPesquisa.value;
+        let busca = obterPessoasPesquisadas(termoPesquisado);
+        tbody.innerHTML = '';
+        carregarTabela(busca);
+    });
+}
+
+function carregarTelaHome() {
+    window.location.href = "./home.html";
+}
+
+function obterPessoasSistema() {
+    const dados = obterDadosSistema();
+    if(!dados) {
+        return false;
+    }
+    
+    const dadosPessoas = dados.listaPessoas;
+    console.log(dadosPessoas)
+    return dadosPessoas;
+}
+
+function obterPessoasPesquisadas(busca) {
+    let pessoasEncontradas = pessoas.filter(pessoa => pessoa.nome.includes(busca))
+
+    return pessoasEncontradas;
+}
+
+
+function carregarTabela(pessoas) {
+    pessoas.forEach((pessoa) => {
+        const tdNome = document.createElement('td');
+        tdNome.innerText = pessoa.nome;
+        const tdEmail = document.createElement('td');
+        tdEmail.innerText = pessoa.email;
+        const tdStatus = document.createElement('td');
+        let statusTraduzido;
+        if (pessoa.status) {
+            statusTraduzido = 'Ativo'
+        } else {
+            tdStatus.id = 'status';
+            statusTraduzido = 'Inativo'
+        }
+        tdStatus.innerText = statusTraduzido;
+
+        const tr = document.createElement('tr');
+        tr.appendChild(tdNome)
+        tr.appendChild(tdEmail)
+        tr.appendChild(tdStatus)
+        tbody.appendChild(tr)
+    });
+}
+
+//----------------- TELA CADASTRO ---------------------------
+function carregarDadosCadastro() { 
+    carregarTabela(pessoas);
+}
+
+function carregarTelaCadastro() {
+    window.location.href = "./cadastro.html"
+}
+
+//----------------- TELA CADASTRO ---------------------------
+function carregarTelaNovoCadastro() {
+    window.location.href = "./novo-cadastro.html"
+}
+
+
+//----------------- TELA RELATÓRIOS ---------------------------
+const containerLista = document.querySelector('.container-lista');
+const containerTabela = document.querySelector('.container-tabela');
+const btnImprimir = document.querySelector('#btn-imprimir');
+
+function carregarTelaRelatorios() {
+    window.location.href = "./relatorios.html"
+}
+
+function carregarListaUsuarios() {
+    containerLista.classList.add('inativo');
+    containerTabela.classList.remove('inativo');
+    btnImprimir.classList.remove('inativo');
+    carregarTabela(pessoas);
+}

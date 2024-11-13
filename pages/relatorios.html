@@ -14,19 +14,19 @@
             <p><span>OC</span> Operação Curiosidade</p>
         </header>
         <ul class="opcoes-menu">
-            <li>
+            <li onclick="carregarTelaHome()">
                 <span class="material-symbols-outlined">
                     other_houses
                 </span>
                 Home
             </li>
-            <li>
+            <li onclick="carregarTelaCadastro()">
                 <span class="material-symbols-outlined">
                     person_add
                 </span>
                 Cadastro
             </li>
-            <li id="tela-ativa">
+            <li id="tela-ativa" onclick="carregarTelaRelatorios()">
                 <span class="material-symbols-outlined">
                     insert_chart
                 </span>
@@ -54,12 +54,12 @@
             <div class="relatorios">
                 <div class="container-titulo">
                     <h1 id="titulo">Relatórios</h1>
-                    <button class="btn-area-cadastro inativo">Imprimir</button>
+                    <button id="btn-imprimir" class="btn-area-cadastro inativo">Imprimir</button>
                 </div>
                 <div class="container-lista">
                     <p id="titulo-lista">Nome</p>
                     <ul id="lista-relatorios">
-                        <li>Lista de usuários</li>
+                        <li onclick="carregarListaUsuarios()">Lista de usuários</li>
                     </ul>
                 </div>
                 <div class="container-tabela inativo">
@@ -72,21 +72,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Son Goku</td>
-                                <td>goku@email.com</td>
-                                <td>Ativo</td>
-                            </tr>
-                            <tr>
-                                <td>Virgil Super Choque</td>
-                                <td>superchoque@email.com</td>
-                                <td>Ativo</td>
-                            </tr>
-                            <tr>
-                                <td>Logan Wolverine</td>
-                                <td>wolverine@email.com</td>
-                                <td id="status">Inativo</td>
-                            </tr>
                         </tbody>
                     </table>
                 </div>
