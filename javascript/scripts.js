@@ -82,6 +82,7 @@ const emailInput = document.querySelector("#email");
 const senhaInput = document.querySelector("#password");
 const aviso = document.querySelector('#aviso');
 const btnSair = document.querySelector("#btn-sair");
+let usuarios;
 
 function carregarDados() {
     localStorage.setItem('dadosSistema', JSON.stringify(dadosSistema));
@@ -119,11 +120,11 @@ function obterUsuariosSistema() {
     }
     
     const dadosUsuarios = dados.listaUsuarios;
-    return dadosUsuarios
+    return dadosUsuarios;
 }
 
 function validarLoginUsuario(email, senha) {
-    const usuarios = obterUsuariosSistema();
+    usuarios = obterUsuariosSistema();
     const usuarioEncontrado = usuarios.find(u => u.email === email);
     if(!usuarioEncontrado) {
         return null;
@@ -149,14 +150,14 @@ const numTotal = document.querySelector("#num-total");
 let pessoas = obterPessoasSistema();
 const barraPesquisa = document.querySelector('#barra-pesquisa');
 const tabela = document.querySelector('.tabela');
-const tbody = tabela.lastElementChild;
+let tbody = document.getElementsByTagName('tbody')[0];
 
 function carregarDadosHome() {
     nomeUsuario.innerText = usuarioLogado.nome;
     numTotal.innerText = pessoas.length;
-    carregarTabela(pessoas);
+    carregarTabela(pessoas.reverse());
 
-    filtrarBusca();
+    filtrarBusca()
 }
 
 function filtrarBusca() {
@@ -179,7 +180,6 @@ function obterPessoasSistema() {
     }
     
     const dadosPessoas = dados.listaPessoas;
-    console.log(dadosPessoas)
     return dadosPessoas;
 }
 
@@ -217,15 +217,47 @@ function carregarTabela(pessoas) {
 //----------------- TELA CADASTRO ---------------------------
 function carregarDadosCadastro() { 
     carregarTabela(pessoas);
+
+    filtrarBusca()
 }
 
 function carregarTelaCadastro() {
     window.location.href = "./cadastro.html"
 }
 
-//----------------- TELA CADASTRO ---------------------------
+//----------------- TELA NOVO CADASTRO ---------------------------
 function carregarTelaNovoCadastro() {
     window.location.href = "./novo-cadastro.html"
+}
+
+function cadastrarPessoa(event) {
+    const nome = document.querySelector('#nome').value;
+    const idade = Number(document.querySelector('#idade').value);
+    const email = document.querySelector('#email').value;
+    const endereco = document.querySelector('#endereco').value;
+    const outrasInfos = document.querySelector('#outras-infos').value;
+    const interesses = document.querySelector('#interesses').value;
+    const sentimentos = document.querySelector('#sentimentos').value;
+    const valores = document.querySelector('#valores').value;
+    const statusRadio = document.querySelector('#status');
+
+    let status = statusRadio.checked ? 'Ativo' : 'Inativo';
+
+    pessoa.id = pessoas.length + 1;
+    pessoa.nome = nome;
+    pessoa.idade = idade;
+    pessoa.email = email;
+    pessoa.endereco = endereco;
+    pessoa.outrasInfos = outrasInfos;
+    pessoa.interesses = interesses;
+    pessoa.sentimentos = sentimentos;
+    pessoa.valores = valores;
+    pessoa.dataCadastro = new Date().toLocaleDateString();
+    pessoa.status = status;
+
+    pessoas.push(pessoa);
+    dadosSistema.listaPessoas= pessoas;
+    localStorage.setItem('dadosSistema', JSON.stringify(dadosSistema));
 }
 
 
@@ -233,14 +265,18 @@ function carregarTelaNovoCadastro() {
 const containerLista = document.querySelector('.container-lista');
 const containerTabela = document.querySelector('.container-tabela');
 const btnImprimir = document.querySelector('#btn-imprimir');
+let tituloLista = document.querySelector('#titulo');
 
 function carregarTelaRelatorios() {
     window.location.href = "./relatorios.html"
 }
 
-function carregarListaUsuarios() {
+function carregarListaPessoas() {
+    tituloLista.innerText += '  >  Lista de Pessoas'
     containerLista.classList.add('inativo');
     containerTabela.classList.remove('inativo');
     btnImprimir.classList.remove('inativo');
     carregarTabela(pessoas);
+
+    filtrarBusca()
 }

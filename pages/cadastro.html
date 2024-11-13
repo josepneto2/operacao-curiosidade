@@ -20,7 +20,7 @@
                 </span>
                 Home
             </li>
-            <li id="tela-ativa" onclick="carregarTelaNovoCadastro()">
+            <li id="tela-ativa" onclick="carregarTelaCadastro()">
                 <span class="material-symbols-outlined">
                     person_add
                 </span>
@@ -40,6 +40,7 @@
                 <input 
                     type="text"
                     placeholder="Pesquisar..."
+                    id="barra-pesquisa"
                 />
             </div>
             <div class="dados-usuário">
@@ -54,7 +55,7 @@
             <div class="cadastros">
                 <div class="container-titulo">
                     <h1 id="titulo">Cadastros</h1>
-                    <button class="btn-area-cadastro" onclick="carregarNovoCadastro()">Novo cadastro</button>
+                    <button class="btn-area-cadastro" onclick="carregarTelaNovoCadastro()">Novo cadastro</button>
                 </div>
                 <div class="container-tabela">
                     <table class="tabela">

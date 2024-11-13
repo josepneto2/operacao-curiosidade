@@ -15,19 +15,19 @@
             <p><span>OC</span> Operação Curiosidade</p>
         </header>
         <ul class="opcoes-menu">
-            <li onclick="carregarHome()">
+            <li onclick="carregarTelaHome()">
                 <span class="material-symbols-outlined">
                     other_houses
                 </span>
                 Home
             </li>
-            <li id="tela-ativa" onclick="carregarCadastro()">
+            <li id="tela-ativa" onclick="carregarTelaCadastro()">
                 <span class="material-symbols-outlined">
                     person_add
                 </span>
                 Cadastro
             </li>
-            <li onclick="carregarRelatorios()">
+            <li onclick="carregarTelaRelatorios()">
                 <span class="material-symbols-outlined">
                     insert_chart
                 </span>
@@ -55,11 +55,11 @@
             <div class="cadastros">
                 <div class="container-titulo">
                     <h1 id="titulo">Novo cadastro</h1>
-                    <input type="radio" name="ativo" id="ativo">
+                    <input type="radio" name="ativo" id="status">
                     <label for="ativo">Ativo</label>
                 </div>
                 <div class="container-form">
-                    <form action="">
+                    <form action="./cadastro.html">
                         <h2 class="titulos-form">1º Fatos e dados</h2>
                         <label for="nome">Nome</label>
                         <input type="text" name="nome" id="nome">
@@ -75,12 +75,12 @@
                         <textarea rows="3" name="outras-infos" id="outras-infos"></textarea>
 
                         <h2 class="titulos-form">2º Interesses</h2>
-                        <textarea rows="5" name="outras-infos" id="outras-infos"></textarea>
+                        <textarea rows="5" name="interesses" id="interesses"></textarea>
                         <h2 class="titulos-form">3º Sentimentos</h2>
-                        <textarea rows="5" name="outras-infos" id="outras-infos"></textarea>
+                        <textarea rows="5" name="sentimentos" id="sentimentos"></textarea>
                         <h2 class="titulos-form">4º Valores</h2>
-                        <textarea rows="5" name="outras-infos" id="outras-infos"></textarea>
-                        <button class="btn-area-cadastro">Gravar</button>
+                        <textarea rows="5" name="valores" id="valores"></textarea>
+                        <button class="btn-area-cadastro" onclick="cadastrarPessoa(event)">Gravar</button>
                     </form>
                 </div>
             </div>
