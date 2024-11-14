@@ -265,8 +265,8 @@ function carregarTelaNovoCadastro() {
     window.location.href = "./novo-cadastro.html"
 }
 
-function cadastrarPessoa() {
-    const nome = document.querySelector('#nome').value;
+function cadastrarPessoa(event) {
+    const nome = document.querySelector('#nome');
     const idade = Number(document.querySelector('#idade').value);
     const email = document.querySelector('#email').value;
     const endereco = document.querySelector('#endereco').value;
@@ -277,18 +277,22 @@ function cadastrarPessoa() {
     const statusRadios = document.getElementsByName('status');
 
     let status = '';
-    console.log('antes',status)
     for(let i = 0; i < statusRadios.length; i++) {
         if(statusRadios[i].checked) {
             status = statusRadios[i].value;
-            console.log('for',status)
             break
         }
     }
-    console.log('depois',status)
+
+    if(!verificarNome(nome)) {
+        event.preventDefault()
+        nome.focus();
+        nome.value = ""
+        nome.setAttribute('placeholder', 'errado');
+    }
 
     pessoa.id = pessoas.length + 1;
-    pessoa.nome = nome;
+    pessoa.nome = nome.value;
     pessoa.idade = idade;
     pessoa.email = email;
     pessoa.endereco = endereco;
@@ -302,6 +306,10 @@ function cadastrarPessoa() {
     pessoas.push(pessoa);
     dadosSistema.listaPessoas= pessoas;
     localStorage.setItem('dadosSistema', JSON.stringify(dadosSistema));
+}
+
+function verificarNome(nome) {
+    return nome.length < 2
 }
 
 

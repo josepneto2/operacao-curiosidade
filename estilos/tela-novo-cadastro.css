@@ -69,13 +69,13 @@
 #email {
     grid-area: email;
     margin-left: 20px;
-
 }
 
 .container-form textarea{
     resize: none;
     border: 1px solid #d3d3d3;
     margin-bottom: 20px;
+    padding: 10px;
 }
 
 .btn-area-cadastro {

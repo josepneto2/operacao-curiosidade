@@ -61,26 +61,66 @@
                 <div class="container-form">
                     <form action="./cadastro.html">
                         <h2 class="titulos-form">1º Fatos e dados</h2>
-                        <label for="nome">Nome</label>
-                        <input type="text" name="nome" id="nome">
+                        <label for="nome">Nome*</label>
+                        <input 
+                            type="text" 
+                            name="nome" 
+                            id="nome"
+                            maxlength="60"
+                        >
                         <div id="grid-idade-email">
                             <label for="idade" id="label-idade">Idade</label>
-                            <input type="number" name="idade" id="idade">
-                            <label for="email" id="label-email">Email</label>
-                            <input type="text" name="email" id="email">
+                            <input 
+                                type="number" 
+                                name="idade" 
+                                id="idade"
+                                min="0"
+                                max="100"
+                            >
+                            <label for="email" id="label-email">Email*</label>
+                            <input 
+                                type="text" 
+                                name="email" 
+                                id="email"
+                                maxlength="80"
+                            >
                         </div>
                         <label for="endereco">Endereço</label>
-                        <input type="text" name="endereco" id="endereco">
+                        <input 
+                            type="text" 
+                            name="endereco" 
+                            id="endereco"
+                            maxlength="130"
+                        >
                         <label for="outras-info">Outras Informações</label>
-                        <textarea rows="3" name="outras-infos" id="outras-infos"></textarea>
+                        <textarea 
+                            rows="3" 
+                            name="outras-infos" 
+                            id="outras-infos"
+                            maxlength="300"
+                        ></textarea>
 
                         <h2 class="titulos-form">2º Interesses</h2>
-                        <textarea rows="5" name="interesses" id="interesses"></textarea>
+                        <textarea 
+                            rows="5" 
+                            name="interesses" 
+                            id="interesses"
+                            maxlength="600"
+                        ></textarea>
                         <h2 class="titulos-form">3º Sentimentos</h2>
-                        <textarea rows="5" name="sentimentos" id="sentimentos"></textarea>
+                        <textarea 
+                            rows="5" 
+                            name="sentimentos" id="sentimentos"
+                            maxlength="600"
+                        ></textarea>
                         <h2 class="titulos-form">4º Valores</h2>
-                        <textarea rows="5" name="valores" id="valores"></textarea>
-                        <button class="btn-area-cadastro" onclick="cadastrarPessoa()">Gravar</button>
+                        <textarea 
+                            rows="5" 
+                            name="valores" 
+                            id="valores"
+                            maxlength="600"
+                        ></textarea>
+                        <button class="btn-area-cadastro" onclick="cadastrarPessoa(event)">Gravar</button>
                     </form>
                 </div>
             </div>
