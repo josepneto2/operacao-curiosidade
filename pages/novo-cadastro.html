@@ -45,9 +45,7 @@
             </div>
             <div class="dados-usuário">
                 <img id="foto-usuario" src="../imagens/avatar-usuario.png" alt="">
-                <p>
-                    José P Neto
-                </p>
+                <p id="nome-usuario"></p>
                 <a href="index.html" id="btn-sair">Sair</a>
             </div>
         </header>
@@ -55,8 +53,10 @@
             <div class="cadastros">
                 <div class="container-titulo">
                     <h1 id="titulo">Novo cadastro</h1>
-                    <input type="radio" name="ativo" id="status">
+                    <input type="radio" name="status" id="ativo" value="Ativo" checked>
                     <label for="ativo">Ativo</label>
+                    <input type="radio" name="status" id="inativo" value="Inativo">
+                    <label for="inativo">Inativo</label>
                 </div>
                 <div class="container-form">
                     <form action="./cadastro.html">
@@ -67,7 +67,7 @@
                             <label for="idade" id="label-idade">Idade</label>
                             <input type="number" name="idade" id="idade">
                             <label for="email" id="label-email">Email</label>
-                            <input type="email" name="email" id="email">
+                            <input type="text" name="email" id="email">
                         </div>
                         <label for="endereco">Endereço</label>
                         <input type="text" name="endereco" id="endereco">
@@ -80,7 +80,7 @@
                         <textarea rows="5" name="sentimentos" id="sentimentos"></textarea>
                         <h2 class="titulos-form">4º Valores</h2>
                         <textarea rows="5" name="valores" id="valores"></textarea>
-                        <button class="btn-area-cadastro" onclick="cadastrarPessoa(event)">Gravar</button>
+                        <button class="btn-area-cadastro" onclick="cadastrarPessoa()">Gravar</button>
                     </form>
                 </div>
             </div>

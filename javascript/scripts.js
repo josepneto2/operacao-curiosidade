@@ -22,10 +22,10 @@ const dadosSistema = {
             endereco: "Distrito Leste 439",
             outrasInformacoes: "Seu poder é mais de 8 mil",
             interesses: "Artes Marciais",
-            sentimentos: "",
-            valores: "",
-            dataCadastro: 0,
-            status: true
+            sentimentos: "sentimentos",
+            valores: "valores",
+            dataCadastro: "1/5/2024",
+            status: 'Ativo'
         },
         {
             id: 2,
@@ -33,12 +33,12 @@ const dadosSistema = {
             idade: 15,
             email: "superchoque@email.com",
             endereco: "Dakota",
-            outrasInformacoes: "",
-            interesses: "",
-            sentimentos: "",
-            valores: "",
-            dataCadastro: 0,
-            status: true
+            outrasInformacoes: "outras infos",
+            interesses: "interesses",
+            sentimentos: "sentimentos",
+            valores: "valores",
+            dataCadastro: "10/5/2024",
+            status: 'Inativo'
         },
         {
             id: 3,
@@ -50,8 +50,8 @@ const dadosSistema = {
             interesses: "",
             sentimentos: "",
             valores: "",
-            dataCadastro: 0,
-            status: false
+            dataCadastro: "14/11/2024",
+            status: 'Inativo'
         },
     ]
 }
@@ -74,7 +74,7 @@ const pessoa = {
     sentimentos: "",
     valores: "",
     dataCadastro: 0,
-    status: false
+    status: ""
 }
 
 //----------------- TELA LOGIN ---------------------------
@@ -145,19 +145,57 @@ btnSair.addEventListener('click', handleLogout);
 
 //----------------- TELA HOME ---------------------------
 const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
-const nomeUsuario = document.querySelector("#nome-usuario");
+let nomeUsuario = document.querySelector("#nome-usuario");
 const numTotal = document.querySelector("#num-total");
+const numMes = document.querySelector("#num-mes");
+const numPendencia = document.querySelector("#num-pendencia");
 let pessoas = obterPessoasSistema();
 const barraPesquisa = document.querySelector('#barra-pesquisa');
 const tabela = document.querySelector('.tabela');
 let tbody = document.getElementsByTagName('tbody')[0];
 
+nomeUsuario.innerText = usuarioLogado.nome;
+
 function carregarDadosHome() {
-    nomeUsuario.innerText = usuarioLogado.nome;
     numTotal.innerText = pessoas.length;
+    numMes.innerText = quantidadeCadastrosUltimoMes(pessoas);
+    numPendencia.innerText = quantidadeCadastrosPendentes(pessoas);
     carregarTabela(pessoas.reverse());
 
     filtrarBusca()
+}
+
+function quantidadeCadastrosPendentes(pessoas){
+    let totalPendentes = 0;
+    pessoas.forEach(pessoa => {
+        const valores = Object.values(pessoa);
+        let vazio = valores.some(valor => valor === "")
+        if(vazio) {
+            totalPendentes++;
+        }
+    })
+    return totalPendentes;
+}
+
+function quantidadeCadastrosUltimoMes(pessoas) {
+    const mesAtual = new Date().getMonth();
+    let cadastrosUltimoMes = 0;
+    pessoas.forEach(pessoa => {
+        const mesCadastro = obterMesCadastrado(pessoa) - 1;
+        if (mesCadastro === mesAtual) {
+            cadastrosUltimoMes++;
+        }
+    })
+
+    return cadastrosUltimoMes;
+}
+
+function obterMesCadastrado(pessoa) {
+    const dataCadastro = pessoa.dataCadastro;
+    const dataSeparada = dataCadastro.split("/");
+    const mes = dataSeparada[1];
+
+    return mes;
 }
 
 function filtrarBusca() {
@@ -197,14 +235,11 @@ function carregarTabela(pessoas) {
         const tdEmail = document.createElement('td');
         tdEmail.innerText = pessoa.email;
         const tdStatus = document.createElement('td');
-        let statusTraduzido;
-        if (pessoa.status) {
-            statusTraduzido = 'Ativo'
-        } else {
-            tdStatus.id = 'status';
-            statusTraduzido = 'Inativo'
+        tdStatus.innerText = pessoa.status;
+        
+        if (pessoa.status === 'Inativo') {
+            tdStatus.id = 'statusInativo';
         }
-        tdStatus.innerText = statusTraduzido;
 
         const tr = document.createElement('tr');
         tr.appendChild(tdNome)
@@ -230,7 +265,7 @@ function carregarTelaNovoCadastro() {
     window.location.href = "./novo-cadastro.html"
 }
 
-function cadastrarPessoa(event) {
+function cadastrarPessoa() {
     const nome = document.querySelector('#nome').value;
     const idade = Number(document.querySelector('#idade').value);
     const email = document.querySelector('#email').value;
@@ -239,16 +274,25 @@ function cadastrarPessoa(event) {
     const interesses = document.querySelector('#interesses').value;
     const sentimentos = document.querySelector('#sentimentos').value;
     const valores = document.querySelector('#valores').value;
-    const statusRadio = document.querySelector('#status');
+    const statusRadios = document.getElementsByName('status');
 
-    let status = statusRadio.checked ? 'Ativo' : 'Inativo';
+    let status = '';
+    console.log('antes',status)
+    for(let i = 0; i < statusRadios.length; i++) {
+        if(statusRadios[i].checked) {
+            status = statusRadios[i].value;
+            console.log('for',status)
+            break
+        }
+    }
+    console.log('depois',status)
 
     pessoa.id = pessoas.length + 1;
     pessoa.nome = nome;
     pessoa.idade = idade;
     pessoa.email = email;
     pessoa.endereco = endereco;
-    pessoa.outrasInfos = outrasInfos;
+    pessoa.outrasInformacoes = outrasInfos;
     pessoa.interesses = interesses;
     pessoa.sentimentos = sentimentos;
     pessoa.valores = valores;
