@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OC - Operação Curiosidade</title>    
+    <title>OC - Relatórios</title>    
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"/>
     <link rel="stylesheet" href="../estilos/style.css">
     <link rel="stylesheet" href="../estilos/tela-relatorios.css">
+    <link rel="stylesheet" href="../estilos/impressao.css" media="print">
 </head>
 <body class="app-page">
     <nav class="menu">
@@ -43,7 +44,7 @@
                     id="barra-pesquisa"
                 />
             </div>
-            <div class="dados-usuário">
+            <div class="dados-usuario">
                 <img id="foto-usuario" src="../imagens/avatar-usuario.png" alt="">
                 <p id="nome-usuario"></p>
                 <a href="index.html" id="btn-sair">Sair</a>
@@ -53,7 +54,7 @@
             <div class="relatorios">
                 <div class="container-titulo">
                     <h1 id="titulo">Relatórios</h1>
-                    <button id="btn-imprimir" class="btn-area-cadastro inativo">Imprimir</button>
+                    <button id="btn-imprimir" class="btn-area-cadastro inativo" onclick="imprimir()">Imprimir</button>
                 </div>
                 <div class="container-lista">
                     <p id="titulo-lista">Nome</p>

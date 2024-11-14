@@ -324,3 +324,7 @@ function carregarListaPessoas() {
 
     filtrarBusca()
 }
+
+function imprimir() {
+    window.print();
+}

@@ -1,0 +1,14 @@
+* {
+    font-family: 'Courier New', 'Courier New', Courier, monospace;
+    font-size: 1em;
+}
+
+.menu, 
+.conteudo > .header-conteudo,
+#btn-imprimir {
+    display: none;
+}
+
+.conteudo .principal{
+    margin-top: 0;
+}
