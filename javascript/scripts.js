@@ -95,22 +95,29 @@ function realizarLogin(event) {
     const usuarioCadastrado = validarLoginUsuario(email, senha);
     
     if (!usuarioCadastrado) {
+        emailInput.focus()
+        emailInput.style.border = '2px solid red';
+        senhaInput.style.border = '2px solid red';
         aviso.classList.remove('inativo');
-        return
+        return;
     }
     
     localStorage.setItem("usuarioLogado", JSON.stringify(usuarioCadastrado));
-    window.location.href = "./home.html"
+    window.location.href = "./home.html";
 }
 
-function obterDadosSistema() {
-    const dadosJson = localStorage.getItem('dadosSistema');
-    if(!dadosJson) {
-        return false;
+function validarLoginUsuario(email, senha) {
+    usuarios = obterUsuariosSistema();
+    const usuarioEncontrado = usuarios.find(u => u.email === email);
+    if(!usuarioEncontrado) {
+        return null;
     }
     
-    const dadosObj = JSON.parse(dadosJson);
-    return dadosObj;
+    if (usuarioEncontrado.email === email && usuarioEncontrado.senha === senha){
+        return usuarioEncontrado;
+    } else {
+        return null;
+    }
 }
 
 function obterUsuariosSistema() {
@@ -123,18 +130,14 @@ function obterUsuariosSistema() {
     return dadosUsuarios;
 }
 
-function validarLoginUsuario(email, senha) {
-    usuarios = obterUsuariosSistema();
-    const usuarioEncontrado = usuarios.find(u => u.email === email);
-    if(!usuarioEncontrado) {
-        return null;
+function obterDadosSistema() {
+    const dadosJson = localStorage.getItem('dadosSistema');
+    if(!dadosJson) {
+        return false;
     }
     
-    if (usuarioEncontrado.email === email && usuarioEncontrado.senha === senha){
-        return usuarioEncontrado
-    } else {
-        return null;
-    }
+    const dadosObj = JSON.parse(dadosJson);
+    return dadosObj;
 }
 
 function handleLogout() {
@@ -145,14 +148,17 @@ btnSair.addEventListener('click', handleLogout);
 
 //----------------- TELA HOME ---------------------------
 const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
+
 let nomeUsuario = document.querySelector("#nome-usuario");
+
 const numTotal = document.querySelector("#num-total");
 const numMes = document.querySelector("#num-mes");
 const numPendencia = document.querySelector("#num-pendencia");
-let pessoas = obterPessoasSistema();
-const barraPesquisa = document.querySelector('#barra-pesquisa');
+
 const tabela = document.querySelector('.tabela');
 let tbody = document.getElementsByTagName('tbody')[0];
+
+let pessoas = obterPessoasSistema();
 
 nomeUsuario.innerText = usuarioLogado.nome;
 
@@ -162,7 +168,7 @@ function carregarDadosHome() {
     numPendencia.innerText = quantidadeCadastrosPendentes(pessoas);
     carregarTabela(pessoas.reverse());
 
-    filtrarBusca()
+    filtrarBusca();
 }
 
 function quantidadeCadastrosPendentes(pessoas){
@@ -199,16 +205,14 @@ function obterMesCadastrado(pessoa) {
 }
 
 function filtrarBusca() {
-    barraPesquisa.addEventListener('input', () => {
+    const barraPesquisa = document.querySelector('#barra-pesquisa');
+
+    barraPesquisa.addEventListener('input', function() {
         let termoPesquisado = barraPesquisa.value;
         let busca = obterPessoasPesquisadas(termoPesquisado);
         tbody.innerHTML = '';
         carregarTabela(busca);
     });
-}
-
-function carregarTelaHome() {
-    window.location.href = "./home.html";
 }
 
 function obterPessoasSistema() {
@@ -223,7 +227,7 @@ function obterPessoasSistema() {
 
 function obterPessoasPesquisadas(busca) {
     let pessoasEncontradas = pessoas.filter(pessoa => pessoa.nome.includes(busca))
-
+    
     return pessoasEncontradas;
 }
 
@@ -242,33 +246,37 @@ function carregarTabela(pessoas) {
         }
 
         const tr = document.createElement('tr');
-        tr.appendChild(tdNome)
-        tr.appendChild(tdEmail)
-        tr.appendChild(tdStatus)
-        tbody.appendChild(tr)
+        tr.appendChild(tdNome);
+        tr.appendChild(tdEmail);
+        tr.appendChild(tdStatus);
+        tbody.appendChild(tr);
     });
+}
+
+function carregarTelaHome() {
+    window.location.href = "./home.html";
 }
 
 //----------------- TELA CADASTRO ---------------------------
 function carregarDadosCadastro() { 
     carregarTabela(pessoas);
 
-    filtrarBusca()
+    filtrarBusca();
 }
 
 function carregarTelaCadastro() {
-    window.location.href = "./cadastro.html"
+    window.location.href = "./cadastro.html";
 }
 
 //----------------- TELA NOVO CADASTRO ---------------------------
 function carregarTelaNovoCadastro() {
-    window.location.href = "./novo-cadastro.html"
+    window.location.href = "./novo-cadastro.html";
 }
 
 function cadastrarPessoa(event) {
     const nome = document.querySelector('#nome');
     const idade = Number(document.querySelector('#idade').value);
-    const email = document.querySelector('#email').value;
+    const email = document.querySelector('#email');
     const endereco = document.querySelector('#endereco').value;
     const outrasInfos = document.querySelector('#outras-infos').value;
     const interesses = document.querySelector('#interesses').value;
@@ -276,40 +284,65 @@ function cadastrarPessoa(event) {
     const valores = document.querySelector('#valores').value;
     const statusRadios = document.getElementsByName('status');
 
-    let status = '';
+    let statusValor = '';
     for(let i = 0; i < statusRadios.length; i++) {
         if(statusRadios[i].checked) {
-            status = statusRadios[i].value;
-            break
+            statusValor = statusRadios[i].value;
+            break;
         }
     }
 
-    if(!verificarNome(nome)) {
+    if(!verificarNome(nome.value)) {
         event.preventDefault()
-        nome.focus();
-        nome.value = ""
-        nome.setAttribute('placeholder', 'errado');
+        erroInput(nome);
+        return;
+    }
+    
+    if(!verificarEmail(email.value)) {
+        event.preventDefault()
+        erroInput(email);
+        return;
     }
 
     pessoa.id = pessoas.length + 1;
     pessoa.nome = nome.value;
     pessoa.idade = idade;
-    pessoa.email = email;
+    pessoa.email = email.value;
     pessoa.endereco = endereco;
     pessoa.outrasInformacoes = outrasInfos;
     pessoa.interesses = interesses;
     pessoa.sentimentos = sentimentos;
     pessoa.valores = valores;
     pessoa.dataCadastro = new Date().toLocaleDateString();
-    pessoa.status = status;
+    pessoa.status = statusValor;
 
     pessoas.push(pessoa);
-    dadosSistema.listaPessoas= pessoas;
+    dadosSistema.listaPessoas = pessoas;
     localStorage.setItem('dadosSistema', JSON.stringify(dadosSistema));
+
+    alert('Cadastro realizado com sucesso!')
 }
 
+function erroInput(input) {
+    input.focus();
+    input.value = "";
+    input.style.border = '1px solid red';
+    input.setAttribute('placeholder', '*O campo deve ser preenchido corretamente');
+}
+
+//https://blog.casadodesenvolvedor.com.br/expressoes-regulares-regex/
 function verificarNome(nome) {
-    return nome.length < 2
+    const regex = new RegExp(/^([A-ZÀ-Ú][a-zà-ú]*\s)*[A-ZÀ-Ú][a-zà-ú]*$/)
+    const nomeValido = regex.test(nome);
+    console.log('nome valido', nomeValido);
+    return nomeValido;
+}
+
+function verificarEmail(email) {
+    const regex = new RegExp(/^([\w]\.?)+@([a-z]{3,}\.)+([a-z]{2,4})+$/)
+    const emailValido = regex.test(email);
+    console.log('email valido', emailValido);
+    return emailValido;
 }
 
 
@@ -320,17 +353,17 @@ const btnImprimir = document.querySelector('#btn-imprimir');
 let tituloLista = document.querySelector('#titulo');
 
 function carregarTelaRelatorios() {
-    window.location.href = "./relatorios.html"
+    window.location.href = "./relatorios.html";
 }
 
 function carregarListaPessoas() {
-    tituloLista.innerText += '  >  Lista de Pessoas'
+    tituloLista.innerText += '  >  Lista de Pessoas';
     containerLista.classList.add('inativo');
     containerTabela.classList.remove('inativo');
     btnImprimir.classList.remove('inativo');
     carregarTabela(pessoas);
 
-    filtrarBusca()
+    filtrarBusca();
 }
 
 function imprimir() {

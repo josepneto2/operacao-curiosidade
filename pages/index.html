@@ -17,12 +17,14 @@
                 id="email"
                 placeholder="Email"
                 required
+                onblur="this.style.border='2px solid black'"
             />
             <input 
                 type="password" 
                 name="password" 
                 id="password"
                 placeholder="Senha"
+                onblur="this.style.border='2px solid black'"
             />
             <div class="container-btn">
                 <button class="btn" onclick="realizarLogin(event)">Entrar</button>

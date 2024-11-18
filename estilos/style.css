@@ -9,6 +9,10 @@ li {
     list-style-type: none;
 }
 
+input, textarea{
+    outline: none;
+}
+
 a {
     text-decoration: none;
     color: black;
@@ -176,6 +180,11 @@ td, #lista-relatorios{
     font-size: .9em;
     color: #535353;
 }
+
+tbody > tr:hover {
+    background-color: #ecf1fe;
+}
+
 
 td:last-child {
     text-align: center;
