@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OC - Editar pessoa</title>    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"/>
+    <link rel="stylesheet" href="../estilos/style.css">
+    <link rel="stylesheet" href="../estilos/tela-cadastro.css">
+    <link rel="stylesheet" href="../estilos/tela-novo-cadastro.css">
+</head>
+<body class="app-page" onload="carregarDadosEdicao()">
+    <nav class="menu">
+        <header class="header-menu">
+            <p><span>OC</span> Operação Curiosidade</p>
+        </header>
+        <ul class="opcoes-menu">
+            <li onclick="carregarTelaHome()">
+                <span class="material-symbols-outlined">
+                    other_houses
+                </span>
+                Home
+            </li>
+            <li id="tela-ativa" onclick="carregarTelaCadastro()">
+                <span class="material-symbols-outlined">
+                    person_add
+                </span>
+                Cadastro
+            </li>
+            <li onclick="carregarTelaRelatorios()">
+                <span class="material-symbols-outlined">
+                    insert_chart
+                </span>
+                Relatórios
+            </li>
+        </ul>
+    </nav>
+    <section class="conteudo">
+        <header class="header-conteudo">
+            <div class="container-pesquisa">
+                <input 
+                    type="text"
+                    placeholder="Pesquisar..."
+                />
+            </div>
+            <div class="dados-usuario">
+                <img id="foto-usuario" src="../imagens/avatar-usuario.png" alt="">
+                <p id="nome-usuario"></p>
+                <a href="index.html" id="btn-sair">Sair</a>
+            </div>
+        </header>
+        <section class="principal">
+            <div class="cadastros">
+                <div class="container-titulo">
+                    <h1 id="titulo">Editar cadastro</h1>
+                    <input type="radio" name="status" id="ativo" value="Ativo" checked>
+                    <label for="ativo">Ativo</label>
+                    <input type="radio" name="status" id="inativo" value="Inativo">
+                    <label for="inativo">Inativo</label>
+                </div>
+                <div class="container-form">
+                    <form action="./cadastro.html">
+                        <h2 class="titulos-form">1º Fatos e dados</h2>
+                        <label for="nome">Nome*</label>
+                        <input 
+                            type="text" 
+                            name="nome" 
+                            id="nome"
+                            maxlength="60"
+                            onblur="this.style.border='1px solid #d3d3d3'"
+                        >
+                        <div id="grid-idade-email">
+                            <label for="idade" id="label-idade">Idade</label>
+                            <input 
+                                type="number" 
+                                name="idade" 
+                                id="idade"
+                                min="0"
+                                max="100"
+                            >
+                            <label for="email" id="label-email">Email*</label>
+                            <input 
+                                type="email" 
+                                name="email" 
+                                id="email"
+                                maxlength="80"
+                            >
+                        </div>
+                        <label for="endereco">Endereço</label>
+                        <input 
+                            type="text" 
+                            name="endereco" 
+                            id="endereco"
+                            maxlength="130"
+                        >
+                        <label for="outras-info">Outras Informações</label>
+                        <textarea 
+                            rows="3" 
+                            name="outras-infos" 
+                            id="outras-infos"
+                            maxlength="300"
+                        ></textarea>
+
+                        <h2 class="titulos-form">2º Interesses</h2>
+                        <textarea 
+                            rows="5" 
+                            name="interesses" 
+                            id="interesses"
+                            maxlength="600"
+                        ></textarea>
+                        <h2 class="titulos-form">3º Sentimentos</h2>
+                        <textarea 
+                            rows="5" 
+                            name="sentimentos" id="sentimentos"
+                            maxlength="600"
+                        ></textarea>
+                        <h2 class="titulos-form">4º Valores</h2>
+                        <textarea 
+                            rows="5" 
+                            name="valores" 
+                            id="valores"
+                            maxlength="600"
+                        ></textarea>
+                        <button class="btn-area-cadastro" onclick="cadastrarPessoa(event)">Gravar</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </section>
+    <script src="../javascript/scripts.js"></script>
+</body>
+</html>

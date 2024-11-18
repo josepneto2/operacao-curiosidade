@@ -1,7 +1,6 @@
 const dadosSistema = {
     listaUsuarios: [
         {
-            id: 1,
             nome: "admin",
             email: "admin@email.com",
             senha: "admin"
@@ -57,7 +56,6 @@ const dadosSistema = {
 }
 
 const usuario = {
-    id: 0,
     nome: "",
     email: "",
     senha: ""
@@ -77,7 +75,7 @@ const pessoa = {
     status: ""
 }
 
-//----------------- TELA LOGIN ---------------------------
+//----------------- TELA LOGIN -----------------
 const emailInput = document.querySelector("#email");
 const senhaInput = document.querySelector("#password");
 const aviso = document.querySelector('#aviso');
@@ -146,7 +144,7 @@ function handleLogout() {
 
 btnSair.addEventListener('click', handleLogout);
 
-//----------------- TELA HOME ---------------------------
+//----------------- TELA HOME -----------------
 const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
 
 let nomeUsuario = document.querySelector("#nome-usuario");
@@ -246,6 +244,7 @@ function carregarTabela(pessoas) {
         }
 
         const tr = document.createElement('tr');
+        tr.setAttribute('onclick', 'editarPessoa(event)');
         tr.appendChild(tdNome);
         tr.appendChild(tdEmail);
         tr.appendChild(tdStatus);
@@ -253,37 +252,46 @@ function carregarTabela(pessoas) {
     });
 }
 
+function editarPessoa(event) {
+    let pessoaParaEditar = event.target.innerText;
+    pessoaParaEditar = pessoas.find(p => p.nome === pessoaParaEditar || p. email === pessoaParaEditar)
+    localStorage.setItem('editarPessoa', JSON.stringify(pessoaParaEditar))
+    window.location.href = "./editar-pessoa.html";
+}
+
 function carregarTelaHome() {
     window.location.href = "./home.html";
 }
 
-//----------------- TELA CADASTRO ---------------------------
+//----------------- TELA CADASTRO -----------------
 function carregarDadosCadastro() { 
     carregarTabela(pessoas);
 
     filtrarBusca();
+
+    console.log(tabela)
 }
 
 function carregarTelaCadastro() {
     window.location.href = "./cadastro.html";
 }
 
-//----------------- TELA NOVO CADASTRO ---------------------------
+//----------------- TELA NOVO CADASTRO -----------------
 function carregarTelaNovoCadastro() {
     window.location.href = "./novo-cadastro.html";
 }
 
-function cadastrarPessoa(event) {
-    const nome = document.querySelector('#nome');
-    const idade = Number(document.querySelector('#idade').value);
-    const email = document.querySelector('#email');
-    const endereco = document.querySelector('#endereco').value;
-    const outrasInfos = document.querySelector('#outras-infos').value;
-    const interesses = document.querySelector('#interesses').value;
-    const sentimentos = document.querySelector('#sentimentos').value;
-    const valores = document.querySelector('#valores').value;
-    const statusRadios = document.getElementsByName('status');
+const nome = document.querySelector('#nome');
+const idade = document.querySelector('#idade');
+const email = document.querySelector('#email');
+const endereco = document.querySelector('#endereco');
+const outrasInfos = document.querySelector('#outras-infos');
+const interesses = document.querySelector('#interesses');
+const sentimentos = document.querySelector('#sentimentos');
+const valores = document.querySelector('#valores');
+const statusRadios = document.getElementsByName('status');
 
+function cadastrarPessoa(event) {
     let statusValor = '';
     for(let i = 0; i < statusRadios.length; i++) {
         if(statusRadios[i].checked) {
@@ -291,7 +299,7 @@ function cadastrarPessoa(event) {
             break;
         }
     }
-
+    
     if(!verificarNome(nome.value)) {
         event.preventDefault()
         erroInput(nome);
@@ -303,24 +311,36 @@ function cadastrarPessoa(event) {
         erroInput(email);
         return;
     }
-
-    pessoa.id = pessoas.length + 1;
+    
     pessoa.nome = nome.value;
-    pessoa.idade = idade;
+    pessoa.idade = Number(idade.value);
     pessoa.email = email.value;
-    pessoa.endereco = endereco;
-    pessoa.outrasInformacoes = outrasInfos;
-    pessoa.interesses = interesses;
-    pessoa.sentimentos = sentimentos;
-    pessoa.valores = valores;
+    pessoa.endereco = endereco.value;
+    pessoa.outrasInformacoes = outrasInfos.value;
+    pessoa.interesses = interesses.value;
+    pessoa.sentimentos = sentimentos.value;
+    pessoa.valores = valores.value;
     pessoa.dataCadastro = new Date().toLocaleDateString();
     pessoa.status = statusValor;
 
-    pessoas.push(pessoa);
-    dadosSistema.listaPessoas = pessoas;
-    localStorage.setItem('dadosSistema', JSON.stringify(dadosSistema));
-
-    alert('Cadastro realizado com sucesso!')
+    const pagina = window.location.href;
+    const paginaAtual = pagina.split('/').pop();
+    
+    if(paginaAtual === "novo-cadastro.html"){
+        pessoa.id = pessoas.length + 1;
+        pessoas.push(pessoa);
+        dadosSistema.listaPessoas = pessoas;
+        localStorage.setItem('dadosSistema', JSON.stringify(dadosSistema));
+        
+        alert('Cadastro realizado com sucesso!')
+    } else {
+        event.preventDefault()
+        let pessoaParaEditar = JSON.parse(localStorage.getItem('editarPessoa'));
+        pessoa.id = pessoaParaEditar.id
+        
+        console.log('pessoa para editar', pessoaParaEditar)
+        console.log('pessoa', pessoa)
+    }
 }
 
 function erroInput(input) {
@@ -334,19 +354,34 @@ function erroInput(input) {
 function verificarNome(nome) {
     const regex = new RegExp(/^([A-ZÀ-Ú][a-zà-ú]*\s)*[A-ZÀ-Ú][a-zà-ú]*$/)
     const nomeValido = regex.test(nome);
-    console.log('nome valido', nomeValido);
     return nomeValido;
 }
 
 function verificarEmail(email) {
     const regex = new RegExp(/^([\w]\.?)+@([a-z]{3,}\.)+([a-z]{2,4})+$/)
     const emailValido = regex.test(email);
-    console.log('email valido', emailValido);
     return emailValido;
 }
 
+//----------------- TELA EDITAR CADASTRO -----------------
+function carregarDadosEdicao() {
+    let pessoaParaEditar = JSON.parse(localStorage.getItem('editarPessoa'));
 
-//----------------- TELA RELATÓRIOS ---------------------------
+    if(pessoaParaEditar.status === 'Inativo') {
+        statusRadios[1].setAttribute('checked', 'true');
+    }
+
+    nome.value = pessoaParaEditar.nome;
+    idade.value = pessoaParaEditar.idade;
+    email.value = pessoaParaEditar.email;
+    endereco.value = pessoaParaEditar.endereco;
+    outrasInfos.value = pessoaParaEditar.outrasInformacoes;
+    interesses.value = pessoaParaEditar.interesses;
+    sentimentos.value = pessoaParaEditar.sentimentos;
+    valores.value = pessoaParaEditar.valores;
+}
+
+//----------------- TELA RELATÓRIOS -----------------
 const containerLista = document.querySelector('.container-lista');
 const containerTabela = document.querySelector('.container-tabela');
 const btnImprimir = document.querySelector('#btn-imprimir');
