@@ -1,6 +1,7 @@
 const dadosSistema = {
     listaUsuarios: [
         {
+            id: 1,
             nome: "admin",
             email: "admin@email.com",
             senha: "admin"
@@ -24,7 +25,8 @@ const dadosSistema = {
             sentimentos: "sentimentos",
             valores: "valores",
             dataCadastro: "1/5/2024",
-            status: 'Ativo'
+            status: 'Ativo',
+            deletado: false
         },
         {
             id: 2,
@@ -37,7 +39,8 @@ const dadosSistema = {
             sentimentos: "sentimentos",
             valores: "valores",
             dataCadastro: "10/5/2024",
-            status: 'Inativo'
+            status: 'Inativo',
+            deletado: false
         },
         {
             id: 3,
@@ -50,12 +53,14 @@ const dadosSistema = {
             sentimentos: "",
             valores: "",
             dataCadastro: "14/11/2024",
-            status: 'Inativo'
+            status: 'Inativo',
+            deletado: false
         },
     ]
 }
 
 const usuario = {
+    id: 0,
     nome: "",
     email: "",
     senha: ""
@@ -72,7 +77,8 @@ const pessoa = {
     sentimentos: "",
     valores: "",
     dataCadastro: 0,
-    status: ""
+    status: "",
+    deletado: false
 }
 
 //----------------- TELA LOGIN -----------------
@@ -157,14 +163,15 @@ const tabela = document.querySelector('.tabela');
 let tbody = document.getElementsByTagName('tbody')[0];
 
 let pessoas = obterPessoasSistema();
+const pessoasSemDelete = pessoas.filter(p => p.deletado === false);
 
 nomeUsuario.innerText = usuarioLogado.nome;
 
 function carregarDadosHome() {
-    numTotal.innerText = pessoas.length;
-    numMes.innerText = quantidadeCadastrosUltimoMes(pessoas);
-    numPendencia.innerText = quantidadeCadastrosPendentes(pessoas);
-    carregarTabela(pessoas.reverse());
+    numTotal.innerText = pessoasSemDelete.length;
+    numMes.innerText = quantidadeCadastrosUltimoMes(pessoasSemDelete);
+    numPendencia.innerText = quantidadeCadastrosPendentes(pessoasSemDelete);
+    carregarTabela(pessoasSemDelete.reverse());
 
     filtrarBusca();
 }
@@ -224,14 +231,14 @@ function obterPessoasSistema() {
 }
 
 function obterPessoasPesquisadas(busca) {
-    let pessoasEncontradas = pessoas.filter(pessoa => pessoa.nome.includes(busca))
+    let pessoasEncontradas = pessoas.filter(pessoa => pessoa.nome.includes(busca) && pessoa.deletado === false)
     
     return pessoasEncontradas;
 }
 
 
-function carregarTabela(pessoas) {
-    pessoas.forEach((pessoa) => {
+function carregarTabela(pessoasSemDelete) {
+    pessoasSemDelete.forEach((pessoa) => {
         const tdNome = document.createElement('td');
         tdNome.innerText = pessoa.nome;
         const tdEmail = document.createElement('td');
@@ -265,7 +272,7 @@ function carregarTelaHome() {
 
 //----------------- TELA CADASTRO -----------------
 function carregarDadosCadastro() { 
-    carregarTabela(pessoas);
+    carregarTabela(pessoasSemDelete);
 
     filtrarBusca();
 
@@ -334,12 +341,16 @@ function cadastrarPessoa(event) {
         
         alert('Cadastro realizado com sucesso!')
     } else {
-        event.preventDefault()
         let pessoaParaEditar = JSON.parse(localStorage.getItem('editarPessoa'));
-        pessoa.id = pessoaParaEditar.id
+        pessoa.id = pessoaParaEditar.id;
         
-        console.log('pessoa para editar', pessoaParaEditar)
-        console.log('pessoa', pessoa)
+        const posicao = pessoa.id - 1;
+        pessoas.splice(posicao, 1, pessoa);
+        dadosSistema.listaPessoas = pessoas;
+        localStorage.setItem('dadosSistema', JSON.stringify(dadosSistema));
+        localStorage.removeItem('editarPessoa');
+        
+        alert('Cadastro alterado com sucesso!')
     }
 }
 
@@ -352,6 +363,10 @@ function erroInput(input) {
 
 //https://blog.casadodesenvolvedor.com.br/expressoes-regulares-regex/
 function verificarNome(nome) {
+    if(nome.length < 3) {
+        return false;
+    }
+
     const regex = new RegExp(/^([A-ZÀ-Ú][a-zà-ú]*\s)*[A-ZÀ-Ú][a-zà-ú]*$/)
     const nomeValido = regex.test(nome);
     return nomeValido;
@@ -381,6 +396,21 @@ function carregarDadosEdicao() {
     valores.value = pessoaParaEditar.valores;
 }
 
+function deletarPessoa(event) {
+    event.preventDefault();
+    let pessoaParaDeletar = JSON.parse(localStorage.getItem('editarPessoa'));
+    pessoaParaDeletar.deletado = true;
+
+    console.log(pessoaParaDeletar);
+    const posicao = pessoaParaDeletar.id - 1;
+    pessoas.splice(posicao, 1, pessoaParaDeletar);
+    dadosSistema.listaPessoas = pessoas;
+    localStorage.setItem('dadosSistema', JSON.stringify(dadosSistema));
+    localStorage.removeItem('editarPessoa');
+
+    alert('Deletou')
+}
+
 //----------------- TELA RELATÓRIOS -----------------
 const containerLista = document.querySelector('.container-lista');
 const containerTabela = document.querySelector('.container-tabela');
@@ -396,7 +426,7 @@ function carregarListaPessoas() {
     containerLista.classList.add('inativo');
     containerTabela.classList.remove('inativo');
     btnImprimir.classList.remove('inativo');
-    carregarTabela(pessoas);
+    carregarTabela(pessoasSemDelete);
 
     filtrarBusca();
 }

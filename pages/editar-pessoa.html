@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"/>
     <link rel="stylesheet" href="../estilos/style.css">
     <link rel="stylesheet" href="../estilos/tela-cadastro.css">
-    <link rel="stylesheet" href="../estilos/tela-novo-cadastro.css">
+    <link rel="stylesheet" href="../estilos/tela-formulario.css">
 </head>
 <body class="app-page" onload="carregarDadosEdicao()">
     <nav class="menu">
@@ -121,8 +121,11 @@
                             id="valores"
                             maxlength="600"
                         ></textarea>
-                        <button class="btn-area-cadastro" onclick="cadastrarPessoa(event)">Gravar</button>
-                    </form>
+                        <div class="container-btn">
+                            <button class="btn-area-cadastro" onclick="cadastrarPessoa(event)">Gravar</button>
+                            <button class="btn-area-cadastro delete" onclick="deletarPessoa(event)">Deletar</button>
+                        </div>
+                        </form>
                 </div>
             </div>
         </section>
