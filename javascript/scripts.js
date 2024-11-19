@@ -93,13 +93,13 @@ function carregarDados() {
 }
 
 function realizarLogin(event) {
-    event.preventDefault()
+    event.preventDefault();
     let email = emailInput.value;
     let senha = senhaInput.value;
     const usuarioCadastrado = validarLoginUsuario(email, senha);
     
     if (!usuarioCadastrado) {
-        emailInput.focus()
+        emailInput.focus();
         emailInput.style.border = '2px solid red';
         senhaInput.style.border = '2px solid red';
         aviso.classList.remove('inativo');
@@ -148,7 +148,9 @@ function handleLogout() {
     localStorage.removeItem("usuarioLogado");
 }
 
-btnSair.addEventListener('click', handleLogout);
+if(btnSair) {
+    btnSair.addEventListener('click', handleLogout);
+}
 
 //----------------- TELA HOME -----------------
 const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
@@ -165,7 +167,9 @@ let tbody = document.getElementsByTagName('tbody')[0];
 let pessoas = obterPessoasSistema();
 const pessoasSemDelete = pessoas.filter(p => p.deletado === false);
 
-nomeUsuario.innerText = usuarioLogado.nome;
+if(nomeUsuario){
+    nomeUsuario.innerText = usuarioLogado.nome;
+}
 
 function carregarDadosHome() {
     numTotal.innerText = pessoasSemDelete.length;
