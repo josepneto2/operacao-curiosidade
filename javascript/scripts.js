@@ -396,8 +396,7 @@ function carregarDadosEdicao() {
     valores.value = pessoaParaEditar.valores;
 }
 
-function deletarPessoa(event) {
-    event.preventDefault();
+function deletarPessoa() {
     let pessoaParaDeletar = JSON.parse(localStorage.getItem('editarPessoa'));
     pessoaParaDeletar.deletado = true;
 
@@ -408,7 +407,7 @@ function deletarPessoa(event) {
     localStorage.setItem('dadosSistema', JSON.stringify(dadosSistema));
     localStorage.removeItem('editarPessoa');
 
-    alert('Deletou')
+    alert('Cadastro deletado com sucesso!')
 }
 
 //----------------- TELA RELATÓRIOS -----------------

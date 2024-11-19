@@ -183,6 +183,7 @@ td, #lista-relatorios{
 
 tbody > tr:hover {
     background-color: #ecf1fe;
+    cursor: pointer;
 }
 
 
