@@ -107,7 +107,7 @@ function realizarLogin(event) {
     }
     
     localStorage.setItem("usuarioLogado", JSON.stringify(usuarioCadastrado));
-    window.location.href = "./home.html";
+    window.location.href = "pages/home.html";
 }
 
 function validarLoginUsuario(email, senha) {
