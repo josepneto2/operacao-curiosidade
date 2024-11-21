@@ -32,7 +32,7 @@
 .dashboard-card .info-descricao {
     text-align: end;
     padding-right: 20px;
-    font-size: .9em;
+    font-size: .8em;
 }
 
 .ultimos-cadastros {
@@ -40,7 +40,7 @@
     margin-top: 20px;
     padding: 20px;
     display: block;
-    min-height: 57vh;
+    min-height: 48vh;
 }
 
 .ultimos-cadastros #titulo{
