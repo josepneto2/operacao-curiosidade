@@ -45,7 +45,7 @@ const dadosSistema = {
         {
             id: 3,
             nome: "Logan Wolverine",
-            idade: 200,
+            idade: 100,
             email: "wolverine@email.com",
             endereco: "Alberta, Canadá",
             outrasInformacoes: "Inimigo do Dentes de Sabre",
@@ -57,14 +57,14 @@ const dadosSistema = {
             deletado: false
         },
     ]
-}
+};
 
 const usuario = {
     id: 0,
     nome: "",
     email: "",
     senha: ""
-}
+};
 
 const pessoa = {
     id: 0,
@@ -79,7 +79,7 @@ const pessoa = {
     dataCadastro: 0,
     status: "",
     deletado: false
-}
+};
 
 //----------------- TELA LOGIN -----------------
 const emailInput = document.querySelector("#email");
@@ -184,7 +184,7 @@ function quantidadeCadastrosPendentes(pessoas){
     let totalPendentes = 0;
     pessoas.forEach(pessoa => {
         const valores = Object.values(pessoa);
-        let vazio = valores.some(valor => valor === "")
+        let vazio = valores.some(valor => valor === "");
         if(vazio) {
             totalPendentes++;
         }
@@ -201,7 +201,6 @@ function quantidadeCadastrosUltimoMes(pessoas) {
             cadastrosUltimoMes++;
         }
     })
-
     return cadastrosUltimoMes;
 }
 
@@ -218,7 +217,7 @@ function filtrarBusca() {
 
     barraPesquisa.addEventListener('input', function() {
         let termoPesquisado = barraPesquisa.value;
-        let busca = obterPessoasPesquisadas(termoPesquisado);
+        let busca = obterPessoasPesquisadas(termoPesquisado, pessoas);
         tbody.innerHTML = '';
         carregarTabela(busca);
     });
@@ -234,12 +233,11 @@ function obterPessoasSistema() {
     return dadosPessoas;
 }
 
-function obterPessoasPesquisadas(busca) {
-    let pessoasEncontradas = pessoas.filter(pessoa => pessoa.nome.includes(busca) && pessoa.deletado === false)
+function obterPessoasPesquisadas(busca, pessoas) {
+    let pessoasEncontradas = pessoas.filter(pessoa => pessoa.nome.includes(busca) && pessoa.deletado === false);
     
     return pessoasEncontradas;
 }
-
 
 function carregarTabela(pessoasSemDelete) {
     pessoasSemDelete.forEach((pessoa) => {
@@ -265,8 +263,8 @@ function carregarTabela(pessoasSemDelete) {
 
 function editarPessoa(event) {
     let pessoaParaEditar = event.target.innerText;
-    pessoaParaEditar = pessoas.find(p => p.nome === pessoaParaEditar || p. email === pessoaParaEditar)
-    localStorage.setItem('editarPessoa', JSON.stringify(pessoaParaEditar))
+    pessoaParaEditar = pessoas.find(p => p.nome === pessoaParaEditar || p. email === pessoaParaEditar);
+    localStorage.setItem('editarPessoa', JSON.stringify(pessoaParaEditar));
     window.location.href = "./editar-pessoa.html";
 }
 
@@ -279,8 +277,6 @@ function carregarDadosCadastro() {
     carregarTabela(pessoasSemDelete);
 
     filtrarBusca();
-
-    console.log(tabela)
 }
 
 function carregarTelaCadastro() {
@@ -312,13 +308,13 @@ function cadastrarPessoa(event) {
     }
     
     if(!verificarNome(nome.value)) {
-        event.preventDefault()
+        event.preventDefault();
         erroInput(nome);
         return;
     }
     
     if(!verificarEmail(email.value)) {
-        event.preventDefault()
+        event.preventDefault();
         erroInput(email);
         return;
     }
@@ -343,7 +339,7 @@ function cadastrarPessoa(event) {
         dadosSistema.listaPessoas = pessoas;
         localStorage.setItem('dadosSistema', JSON.stringify(dadosSistema));
         
-        alert('Cadastro realizado com sucesso!')
+        alert('Cadastro realizado com sucesso!');
     } else {
         let pessoaParaEditar = JSON.parse(localStorage.getItem('editarPessoa'));
         pessoa.id = pessoaParaEditar.id;
@@ -354,7 +350,7 @@ function cadastrarPessoa(event) {
         localStorage.setItem('dadosSistema', JSON.stringify(dadosSistema));
         localStorage.removeItem('editarPessoa');
         
-        alert('Cadastro alterado com sucesso!')
+        alert('Cadastro alterado com sucesso!');
     }
 }
 
@@ -365,19 +361,18 @@ function erroInput(input) {
     input.setAttribute('placeholder', '*O campo deve ser preenchido corretamente');
 }
 
-//https://blog.casadodesenvolvedor.com.br/expressoes-regulares-regex/
 function verificarNome(nome) {
     if(nome.length < 3) {
         return false;
     }
 
-    const regex = new RegExp(/^([A-ZÀ-Ú][a-zà-ú]*\s)*[A-ZÀ-Ú][a-zà-ú]*$/)
+    const regex = new RegExp(/^([A-ZÀ-Ú][a-zà-ú]*\s)*[A-ZÀ-Ú][a-zà-ú]*$/);
     const nomeValido = regex.test(nome);
     return nomeValido;
 }
 
 function verificarEmail(email) {
-    const regex = new RegExp(/^([\w]\.?)+@([a-z]{3,}\.)+([a-z]{2,4})+$/)
+    const regex = new RegExp(/^([\w]{3,}\.?)@([a-z]{3,}\.)+([a-z]{2,})$/);
     const emailValido = regex.test(email);
     return emailValido;
 }
@@ -404,14 +399,13 @@ function deletarPessoa() {
     let pessoaParaDeletar = JSON.parse(localStorage.getItem('editarPessoa'));
     pessoaParaDeletar.deletado = true;
 
-    console.log(pessoaParaDeletar);
     const posicao = pessoaParaDeletar.id - 1;
     pessoas.splice(posicao, 1, pessoaParaDeletar);
     dadosSistema.listaPessoas = pessoas;
     localStorage.setItem('dadosSistema', JSON.stringify(dadosSistema));
     localStorage.removeItem('editarPessoa');
 
-    alert('Cadastro deletado com sucesso!')
+    alert('Cadastro deletado com sucesso!');
 }
 
 //----------------- TELA RELATÓRIOS -----------------
