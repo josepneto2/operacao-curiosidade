@@ -5,6 +5,10 @@
     font-size: 20px;
 }
 
+body {
+    background-color: #f8f8f8;
+}
+
 li {
     list-style-type: none;
 }
@@ -19,9 +23,8 @@ a {
 }
 
 .app-page {
-    background-color: #f8f8f8;
     display: flex;
-    height: 100%;
+    min-height: 100vh;
 }
 
 .menu {
@@ -29,8 +32,7 @@ a {
     flex-direction: column;
     background-color: white;
     box-shadow: 1px 0 2px #d3d3d3;
-    width: 30%;
-    flex-grow: 1;
+    width: 25%;
 }
 
 .header-menu {
@@ -58,7 +60,6 @@ a {
 }
 
 .opcoes-menu{
-    flex: 1;
     margin: 0 20px;
 }
 
@@ -107,7 +108,7 @@ a {
     padding: 10px;
     margin-left: 20px;
     border-radius: 5px;
-    width: 450px;
+    width: 500px;
     border: none;
     font-size: 0.8em;
     background-color: #f8f8f8;
@@ -142,11 +143,12 @@ a {
     color: white;
 }
 
-.conteudo .principal {
+.principal {
     display: flex;
     flex-direction: column;
     margin-top: 19px;
     color: #828282;
+    flex: 1;
 }
 
 .principal .container-titulo {

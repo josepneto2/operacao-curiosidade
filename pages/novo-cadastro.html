@@ -9,124 +9,127 @@
     <link rel="stylesheet" href="../estilos/tela-cadastro.css">
     <link rel="stylesheet" href="../estilos/tela-formulario.css">
 </head>
-<body class="app-page">
-    <nav class="menu">
-        <header class="header-menu">
-            <p><span>OC</span> Operação Curiosidade</p>
-        </header>
-        <ul class="opcoes-menu">
-            <li onclick="carregarTelaHome()">
-                <span class="material-symbols-outlined">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="25px" fill="#5f6368"><path d="M160-120v-375l-72 55-48-64 440-336 440 336-48 63-72-54v375H160Zm160-240q-17 0-28.5-11.5T280-400q0-17 11.5-28.5T320-440q17 0 28.5 11.5T360-400q0 17-11.5 28.5T320-360Zm160 0q-17 0-28.5-11.5T440-400q0-17 11.5-28.5T480-440q17 0 28.5 11.5T520-400q0 17-11.5 28.5T480-360Zm160 0q-17 0-28.5-11.5T600-400q0-17 11.5-28.5T640-440q17 0 28.5 11.5T680-400q0 17-11.5 28.5T640-360Z"/></svg>
-                </span>
-                Home
-            </li>
-            <li id="tela-ativa" onclick="carregarTelaCadastro()">
-                <span class="material-symbols-outlined">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="25px" fill="#5f6368"><path d="M720-400v-120H600v-80h120v-120h80v120h120v80H800v120h-80Zm-360-80q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Z"/></svg>
-                </span>
-                Cadastro
-            </li>
-            <li onclick="carregarTelaRelatorios()">
-                <span class="material-symbols-outlined">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M280-280h80v-280h-80v280Zm160 0h80v-400h-80v400Zm160 0h80v-160h-80v160ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Z"/></svg>
-                </span>
-                Relatórios
-            </li>
-        </ul>
-    </nav>
-    <section class="conteudo">
-        <header class="header-conteudo">
-            <div class="container-pesquisa">
-                <input 
+<body>
+    <div class="app-page">
+        <nav class="menu">
+            <header class="header-menu">
+                <p><span>OC</span> Operação Curiosidade</p>
+            </header>
+            <ul class="opcoes-menu">
+                <li onclick="carregarTelaHome()">
+                    <span class="material-symbols-outlined">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="25px" fill="#5f6368"><path d="M160-120v-375l-72 55-48-64 440-336 440 336-48 63-72-54v375H160Zm160-240q-17 0-28.5-11.5T280-400q0-17 11.5-28.5T320-440q17 0 28.5 11.5T360-400q0 17-11.5 28.5T320-360Zm160 0q-17 0-28.5-11.5T440-400q0-17 11.5-28.5T480-440q17 0 28.5 11.5T520-400q0 17-11.5 28.5T480-360Zm160 0q-17 0-28.5-11.5T600-400q0-17 11.5-28.5T640-440q17 0 28.5 11.5T680-400q0 17-11.5 28.5T640-360Z"/></svg>
+                    </span>
+                    Home
+                </li>
+                <li id="tela-ativa" onclick="carregarTelaCadastro()">
+                    <span class="material-symbols-outlined">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="25px" fill="#5f6368"><path d="M720-400v-120H600v-80h120v-120h80v120h120v80H800v120h-80Zm-360-80q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Z"/></svg>
+                    </span>
+                    Cadastro
+                </li>
+                <li onclick="carregarTelaRelatorios()">
+                    <span class="material-symbols-outlined">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M280-280h80v-280h-80v280Zm160 0h80v-400h-80v400Zm160 0h80v-160h-80v160ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Z"/></svg>
+                    </span>
+                    Relatórios
+                </li>
+            </ul>
+        </nav>
+        <section class="conteudo">
+            <header class="header-conteudo">
+                <div class="container-pesquisa">
+                    <input 
                     type="text"
                     placeholder="Pesquisar..."
-                />
-            </div>
-            <div class="dados-usuario">
-                <img id="foto-usuario" src="../imagens/avatar-usuario.png" alt="">
-                <p id="nome-usuario"></p>
-                <a href="../index.html" id="btn-sair">Sair</a>
-            </div>
-        </header>
-        <section class="principal">
-            <div class="cadastros">
-                <div class="container-titulo">
-                    <h1 id="titulo">Novo cadastro</h1>
-                    <input type="radio" name="status" id="ativo" value="Ativo" checked>
-                    <label for="ativo">Ativo</label>
-                    <input type="radio" name="status" id="inativo" value="Inativo">
-                    <label for="inativo">Inativo</label>
+                    />
                 </div>
-                <div class="container-form">
-                    <form action="./cadastro.html">
-                        <h2 class="titulos-form">1º Fatos e dados</h2>
-                        <label for="nome">Nome*</label>
-                        <input 
+                <div class="dados-usuario">
+                    <img id="foto-usuario" src="../imagens/avatar-usuario.png" alt="">
+                    <p id="nome-usuario"></p>
+                    <a href="../index.html" id="btn-sair">Sair</a>
+                </div>
+            </header>
+            <section class="principal">
+                <div class="cadastros">
+                    <div class="container-titulo">
+                        <h1 id="titulo">Novo cadastro</h1>
+                        <input type="radio" name="status" id="ativo" value="Ativo" checked>
+                        <label for="ativo">Ativo</label>
+                        <input type="radio" name="status" id="inativo" value="Inativo">
+                        <label for="inativo">Inativo</label>
+                    </div>
+                    <div class="container-form">
+                        <form action="./cadastro.html">
+                            <h2 class="titulos-form">1º Fatos e dados</h2>
+                            <label for="nome">Nome*</label>
+                            <input 
                             type="text" 
                             name="nome" 
                             id="nome"
                             maxlength="60"
                             onblur="this.style.border='1px solid #d3d3d3'"
-                        >
-                        <div id="grid-idade-email">
-                            <label for="idade" id="label-idade">Idade</label>
-                            <input 
+                            >
+                            <div id="grid-idade-email">
+                                <label for="idade" id="label-idade">Idade</label>
+                                <input 
                                 type="number" 
                                 name="idade" 
                                 id="idade"
                                 min="0"
                                 max="100"
-                            >
-                            <label for="email" id="label-email">Email*</label>
-                            <input 
+                                >
+                                <label for="email" id="label-email">Email*</label>
+                                <input 
                                 type="email" 
                                 name="email" 
                                 id="email"
                                 maxlength="80"
+                                >
+                            </div>
+                            <label for="endereco">Endereço</label>
+                            <input 
+                                type="text" 
+                                name="endereco" 
+                                id="endereco"
+                                maxlength="130"
                             >
-                        </div>
-                        <label for="endereco">Endereço</label>
-                        <input 
-                            type="text" 
-                            name="endereco" 
-                            id="endereco"
-                            maxlength="130"
-                        >
-                        <label for="outras-info">Outras Informações</label>
-                        <textarea 
-                            rows="3" 
-                            name="outras-infos" 
-                            id="outras-infos"
-                            maxlength="300"
-                        ></textarea>
-
-                        <h2 class="titulos-form">2º Interesses</h2>
-                        <textarea 
-                            rows="5" 
-                            name="interesses" 
-                            id="interesses"
-                            maxlength="600"
-                        ></textarea>
-                        <h2 class="titulos-form">3º Sentimentos</h2>
-                        <textarea 
-                            rows="5" 
-                            name="sentimentos" id="sentimentos"
-                            maxlength="600"
-                        ></textarea>
-                        <h2 class="titulos-form">4º Valores</h2>
-                        <textarea 
-                            rows="5" 
-                            name="valores" 
-                            id="valores"
-                            maxlength="600"
-                        ></textarea>
-                        <button class="btn-area-cadastro" onclick="cadastrarPessoa(event)">Gravar</button>
-                    </form>
+                            <label for="outras-info">Outras Informações</label>
+                            <textarea 
+                                rows="3" 
+                                name="outras-infos" 
+                                id="outras-infos"
+                                maxlength="300"
+                            ></textarea>
+                            
+                            <h2 class="titulos-form">2º Interesses</h2>
+                            <textarea 
+                                rows="5" 
+                                name="interesses" 
+                                id="interesses"
+                                maxlength="600"
+                            ></textarea>
+                            <h2 class="titulos-form">3º Sentimentos</h2>
+                            <textarea 
+                                rows="5" 
+                                name="sentimentos" 
+                                id="sentimentos"
+                                maxlength="600"
+                            ></textarea>
+                            <h2 class="titulos-form">4º Valores</h2>
+                            <textarea 
+                                rows="5" 
+                                name="valores" 
+                                id="valores"
+                                maxlength="600"
+                            ></textarea>
+                            <button class="btn-area-cadastro" onclick="cadastrarPessoa(event)">Gravar</button>
+                        </form>
+                    </div>
                 </div>
-            </div>
+            </section>
         </section>
-    </section>
-    <script src="../javascript/scripts.js"></script>
+        <script src="../javascript/scripts.js"></script>
+    </div>
 </body>
 </html>
