@@ -3,7 +3,7 @@
 }
 
 .container-titulo #titulo {
-    flex: 1
+    flex: 1;
 }
 .container-titulo label {
     margin-right: 20px;
@@ -84,16 +84,4 @@
 
 .container-btn {
     display: flex;
-}
-
-.container-btn > .delete {
-    background-color: #c90000;
-}
-
-.container-btn > .delete:hover {
-    background-color: rgba(201, 0, 0, 0.751);
-}
-
-.container-btn > .delete:active {
-    background-color: #620000;
 }

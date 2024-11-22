@@ -86,10 +86,12 @@ const emailInput = document.querySelector("#email");
 const senhaInput = document.querySelector("#password");
 const aviso = document.querySelector('#aviso');
 const btnSair = document.querySelector("#btn-sair");
-let usuarios;
 
 function carregarDados() {
-    localStorage.setItem('dadosSistema', JSON.stringify(dadosSistema));
+    const dadosExiste = localStorage.getItem('dadosSistema');
+    if(!dadosExiste){
+        localStorage.setItem('dadosSistema', JSON.stringify(dadosSistema));
+    }
 }
 
 function realizarLogin(event) {
@@ -110,8 +112,9 @@ function realizarLogin(event) {
     window.location.href = "pages/home.html";
 }
 
+let usuarios = obterUsuariosSistema();
+
 function validarLoginUsuario(email, senha) {
-    usuarios = obterUsuariosSistema();
     const usuarioEncontrado = usuarios.find(u => u.email === email);
     if(!usuarioEncontrado) {
         return null;
@@ -155,7 +158,16 @@ if(btnSair) {
 //----------------- TELA HOME -----------------
 const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
 
+const opcaoAdm = document.querySelector('.opcao-admin');
+if(usuarioLogado) {
+    let adminOn = usuarioLogado.nome === 'admin' ? 'flex' : 'none'
+    opcaoAdm.style.display = adminOn;
+}
+
 let nomeUsuario = document.querySelector("#nome-usuario");
+if(nomeUsuario){
+    nomeUsuario.innerText = usuarioLogado.nome;
+}
 
 const numTotal = document.querySelector("#num-total");
 const numMes = document.querySelector("#num-mes");
@@ -167,17 +179,13 @@ let tbody = document.getElementsByTagName('tbody')[0];
 let pessoas = obterPessoasSistema();
 const pessoasSemDelete = pessoas.filter(p => p.deletado === false);
 
-if(nomeUsuario){
-    nomeUsuario.innerText = usuarioLogado.nome;
-}
-
 function carregarDadosHome() {
     numTotal.innerText = pessoasSemDelete.length;
     numMes.innerText = quantidadeCadastrosUltimoMes(pessoasSemDelete);
     numPendencia.innerText = quantidadeCadastrosPendentes(pessoasSemDelete);
     carregarTabela(pessoasSemDelete.reverse());
 
-    filtrarBusca();
+    filtrarBusca(pessoas);
 }
 
 function quantidadeCadastrosPendentes(pessoas){
@@ -212,7 +220,7 @@ function obterMesCadastrado(pessoa) {
     return mes;
 }
 
-function filtrarBusca() {
+function filtrarBusca(pessoas) {
     const barraPesquisa = document.querySelector('#barra-pesquisa');
 
     barraPesquisa.addEventListener('input', function() {
@@ -239,8 +247,8 @@ function obterPessoasPesquisadas(busca, pessoas) {
     return pessoasEncontradas;
 }
 
-function carregarTabela(pessoasSemDelete) {
-    pessoasSemDelete.forEach((pessoa) => {
+function carregarTabela(pessoas) {
+    pessoas.forEach((pessoa) => {
         const tdNome = document.createElement('td');
         tdNome.innerText = pessoa.nome;
         const tdEmail = document.createElement('td');
@@ -276,7 +284,7 @@ function carregarTelaHome() {
 function carregarDadosCadastro() { 
     carregarTabela(pessoasSemDelete);
 
-    filtrarBusca();
+    filtrarBusca(pessoas);
 }
 
 function carregarTelaCadastro() {
@@ -329,7 +337,7 @@ function cadastrarPessoa(event) {
     pessoa.valores = valores.value;
     pessoa.dataCadastro = new Date().toLocaleDateString();
     pessoa.status = statusValor;
-
+    
     const pagina = window.location.href;
     const paginaAtual = pagina.split('/').pop();
     
@@ -365,7 +373,7 @@ function verificarNome(nome) {
     if(nome.length < 3) {
         return false;
     }
-
+    
     const regex = new RegExp(/^([A-ZÀ-Ú][a-zà-ú]*\s)*[A-ZÀ-Ú][a-zà-ú]*$/);
     const nomeValido = regex.test(nome);
     return nomeValido;
@@ -380,11 +388,11 @@ function verificarEmail(email) {
 //----------------- TELA EDITAR CADASTRO -----------------
 function carregarDadosEdicao() {
     let pessoaParaEditar = JSON.parse(localStorage.getItem('editarPessoa'));
-
+    
     if(pessoaParaEditar.status === 'Inativo') {
         statusRadios[1].setAttribute('checked', 'true');
     }
-
+    
     nome.value = pessoaParaEditar.nome;
     idade.value = pessoaParaEditar.idade;
     email.value = pessoaParaEditar.email;
@@ -398,13 +406,13 @@ function carregarDadosEdicao() {
 function deletarPessoa() {
     let pessoaParaDeletar = JSON.parse(localStorage.getItem('editarPessoa'));
     pessoaParaDeletar.deletado = true;
-
+    
     const posicao = pessoaParaDeletar.id - 1;
     pessoas.splice(posicao, 1, pessoaParaDeletar);
     dadosSistema.listaPessoas = pessoas;
     localStorage.setItem('dadosSistema', JSON.stringify(dadosSistema));
     localStorage.removeItem('editarPessoa');
-
+    
     alert('Cadastro deletado com sucesso!');
 }
 
@@ -424,10 +432,97 @@ function carregarListaPessoas() {
     containerTabela.classList.remove('inativo');
     btnImprimir.classList.remove('inativo');
     carregarTabela(pessoasSemDelete);
-
-    filtrarBusca();
+    
+    filtrarBusca(pessoas);
 }
 
 function imprimir() {
     window.print();
+}
+
+//----------------- TELA RELATÓRIOS -----------------
+function carregarTelaAdmin() {
+    window.location.href = "./admin.html";
+}
+
+function carregarAdmin() {
+    carregarTabelaUsuarios(usuarios)
+    console.log(usuarios)
+}
+
+function carregarTabelaUsuarios(usuarios) {
+    usuarios.forEach((usuario) => {
+        const tdNome = document.createElement('td');
+        tdNome.innerText = usuario.nome;
+        const tdEmail = document.createElement('td');
+        tdEmail.innerText = usuario.email;
+        
+        const tr = document.createElement('tr');
+        tr.appendChild(tdNome);
+        tr.appendChild(tdEmail);
+        tbody.appendChild(tr);
+    });
+}
+
+function carregarTelaCadastroUsuario() {
+    window.location.href = "./cadastro-usuario.html";
+}
+
+const senha = document.querySelector('#senha');
+const confirmaSenha = document.querySelector('#confirma-senha');
+
+function cadastrarUsuario(event) {
+    if(!verificarNome(nome.value)) {
+        event.preventDefault();        
+        erroInput(nome);
+        return;
+    }
+    
+    if(!verificarEmail(email.value)) {
+        event.preventDefault();
+        erroInput(email);
+        return;
+    }
+    
+    if(!verificarSenha(senha, confirmaSenha)){
+        event.preventDefault();
+        return;
+    }
+    
+    usuario.id = usuarios.length + 1;
+    usuario.nome = nome.value;
+    usuario.email = email.value;
+    usuario.senha = senha.value;
+    usuarios.push(usuario);
+    dadosSistema.listaUsuarios = usuarios;
+    localStorage.setItem('dadosSistema', JSON.stringify(dadosSistema));
+    
+    alert('Cadastro realizado com sucesso!');
+}
+
+function verificarSenha(senha, confirmaSenha) {
+    if(senha.value.length < 3){
+        senha.focus();
+        senha.value = "";
+        senha.style.border = '1px solid red';
+        senha.setAttribute('placeholder', '*A senha deve ter pelos 3 caracteres');
+        return false;
+    }
+
+    if(senha.value !== confirmaSenha.value) {
+        confirmaSenha.focus();
+        confirmaSenha.value = "";
+        confirmaSenha.style.border = '1px solid red';
+        confirmaSenha.setAttribute('placeholder', '*As senhas são diferentes');
+        return false;
+    } else {
+        return true;
+    }
+}
+
+function mostrarSenha() {
+    let atributo = senha.getAttribute('type')
+    let mudaTipo = atributo === 'password' ? 'text' : 'password'
+    senha.setAttribute('type', mudaTipo)
+    confirmaSenha.setAttribute('type', mudaTipo)
 }

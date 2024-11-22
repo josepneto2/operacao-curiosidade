@@ -219,6 +219,30 @@ td:last-child {
     background-color: #1d541d;
 }
 
+.btn-azul {
+    background-color: #3f5a94;
+}
+
+.btn-azul:hover {
+    background-color: rgba(63, 90, 148, 0.755);
+}
+
+.btn-azul:active {
+    background-color: #172a53;
+}
+
+.btn-vermelho {
+    background-color: #c90000;
+}
+
+.btn-vermelho:hover {
+    background-color: rgba(201, 0, 0, 0.751);
+}
+
+.btn-vermelho:active {
+    background-color: #620000;
+}
+
 .inativo {
     display: none;
 }

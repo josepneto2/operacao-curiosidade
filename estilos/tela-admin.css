@@ -1,0 +1,60 @@
+.conteudo > .header-conteudo {
+    justify-content: end;
+}
+
+.opcoes-admin {
+    display: flex;
+    justify-content: space-around;
+    
+}
+
+.cadastros {
+    background-color: white;
+    margin-top: 20px;
+    padding: 20px;
+    height: 100%;
+}
+
+.cadastros #titulo{
+    margin-bottom: 30px;
+}
+
+#email {
+    grid-area: email;
+    margin-left: 0px;
+}
+
+#grid-senha {
+    display: grid;
+    grid-template: 
+    "label-senha - label-confirma-senha"
+    "senha mostra-senha confirma-senha"
+    / 1fr 20px 1fr
+    ;
+}
+
+#label-senha {
+    grid-area: label-senha;
+}
+
+#label-confirma-senha {
+    grid-area: label-confirma-senha;
+}
+
+#senha {
+    grid-area: senha;
+
+}
+
+#confirma-senha {
+    grid-area: confirma-senha;
+}
+
+#mostra-senha {
+    margin: 10px 0 0 -30px;
+    grid-area: mostra-senha;
+}
+
+#mostra-senha {
+    cursor: pointer;
+}
