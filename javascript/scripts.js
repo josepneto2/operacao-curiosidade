@@ -4,13 +4,15 @@ const dadosSistema = {
             id: 1,
             nome: "admin",
             email: "admin@email.com",
-            senha: "admin"
+            senha: "admin",
+            deletado: false
         },
         {
             id: 2,
             nome: "neto",
             email: "neto@email.com",
-            senha: "123"
+            senha: "123",
+            deletado: false
         },
     ],
     listaPessoas: [
@@ -63,7 +65,8 @@ const usuario = {
     id: 0,
     nome: "",
     email: "",
-    senha: ""
+    senha: "",
+    deletado: false
 };
 
 const pessoa = {
@@ -440,14 +443,17 @@ function imprimir() {
     window.print();
 }
 
-//----------------- TELA RELATÓRIOS -----------------
+//----------------- TELA ADMIN -----------------
+let ususariosSemDelete = usuarios.filter(u => u.deletado === false);
+
 function carregarTelaAdmin() {
     window.location.href = "./admin.html";
 }
 
 function carregarAdmin() {
-    carregarTabelaUsuarios(usuarios)
-    console.log(usuarios)
+    carregarTabelaUsuarios(ususariosSemDelete)
+    
+    buscarUsuario(ususariosSemDelete);
 }
 
 function carregarTabelaUsuarios(usuarios) {
@@ -458,6 +464,7 @@ function carregarTabelaUsuarios(usuarios) {
         tdEmail.innerText = usuario.email;
         
         const tr = document.createElement('tr');
+        tr.setAttribute('onclick', 'editarUsuario(event)');
         tr.appendChild(tdNome);
         tr.appendChild(tdEmail);
         tbody.appendChild(tr);
@@ -489,15 +496,32 @@ function cadastrarUsuario(event) {
         return;
     }
     
-    usuario.id = usuarios.length + 1;
     usuario.nome = nome.value;
     usuario.email = email.value;
     usuario.senha = senha.value;
-    usuarios.push(usuario);
-    dadosSistema.listaUsuarios = usuarios;
-    localStorage.setItem('dadosSistema', JSON.stringify(dadosSistema));
+
+    const pagina = window.location.href;
+    const paginaAtual = pagina.split('/').pop();
     
-    alert('Cadastro realizado com sucesso!');
+    if(paginaAtual === "cadastro-usuario.html"){
+        usuario.id = usuarios.length + 1;
+        usuarios.push(usuario);
+        dadosSistema.listaUsuarios = usuarios;
+        localStorage.setItem('dadosSistema', JSON.stringify(dadosSistema));
+        
+        alert('Cadastro realizado com sucesso!');
+    } else {
+        let usuarioParaEditar = JSON.parse(localStorage.getItem('editarUsuario'));
+        usuario.id = usuarioParaEditar.id;
+        
+        const posicao = usuarioParaEditar.id - 1;
+        usuarios.splice(posicao, 1, usuario);
+        dadosSistema.listaUsuarios = usuarios;
+        localStorage.setItem('dadosSistema', JSON.stringify(dadosSistema));
+        localStorage.removeItem('editarUsuario');
+        
+        alert('Cadastro alterado com sucesso!');
+    }
 }
 
 function verificarSenha(senha, confirmaSenha) {
@@ -508,7 +532,7 @@ function verificarSenha(senha, confirmaSenha) {
         senha.setAttribute('placeholder', '*A senha deve ter pelos 3 caracteres');
         return false;
     }
-
+    
     if(senha.value !== confirmaSenha.value) {
         confirmaSenha.focus();
         confirmaSenha.value = "";
@@ -525,4 +549,55 @@ function mostrarSenha() {
     let mudaTipo = atributo === 'password' ? 'text' : 'password'
     senha.setAttribute('type', mudaTipo)
     confirmaSenha.setAttribute('type', mudaTipo)
+}
+
+//----------------- TELA ADMIN - EDITAR USUÁRIO -----------------
+function carregarTelaEditarUsuario() {
+    window.location.href = "./editar-usuario.html";
+}
+
+function carregarDadosEditarUsuario() {
+    let usuarioParaEditar = JSON.parse(localStorage.getItem('editarUsuario'));
+    
+    nome.value = usuarioParaEditar.nome;
+    email.value = usuarioParaEditar.email;
+    senha.value = usuarioParaEditar.senha;
+    confirmaSenha.value = usuarioParaEditar.senha;
+}
+
+function buscarUsuario(usuarios) {
+    const barraPesquisa = document.querySelector('#busca-usuario');
+    
+    barraPesquisa.addEventListener('input', function() {
+        let termoPesquisado = barraPesquisa.value;
+        let usuariosEncontrados = obterUsuariosPesquisados(termoPesquisado, usuarios)
+            tbody.innerHTML = '';
+            carregarTabelaUsuarios(usuariosEncontrados);
+    });
+}
+
+function obterUsuariosPesquisados(busca, usuarios) {
+    let usuariosEncontrados = usuarios.filter(usuario => usuario.nome.includes(busca) || usuario.email.includes(busca));
+    
+    return usuariosEncontrados;
+}
+
+function editarUsuario(event) {
+    let usuarioParaEditar = event.target.innerText;
+    usuarioParaEditar = usuarios.find(u => u.nome === usuarioParaEditar || u. email === usuarioParaEditar);
+    localStorage.setItem('editarUsuario', JSON.stringify(usuarioParaEditar));
+    window.location.href = "./editar-usuario.html";
+}
+
+function deletarUsuario() {
+    let usuarioParaDeletar = JSON.parse(localStorage.getItem('editarUsuario'));
+    usuarioParaDeletar.deletado = true;
+
+    const posicao = usuarioParaDeletar.id - 1;
+    usuarios.splice(posicao, 1, usuarioParaDeletar);
+    dadosSistema.listaUsuarios = usuarios;
+    localStorage.setItem('dadosSistema', JSON.stringify(dadosSistema));
+    localStorage.removeItem('editarUsuario');
+    
+    alert('Cadastro deletado com sucesso!');
 }

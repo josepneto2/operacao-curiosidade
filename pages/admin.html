@@ -50,13 +50,15 @@
                 </div>
             </header>
             <section class="principal">
-                <div class="opcoes-admin">
-                   <button class="btn-area-cadastro" onclick="carregarTelaCadastroUsuario()">Novo usuário</button>
-                   <button class="btn-area-cadastro btn-azul">Editar</button>
-                   <button class="btn-area-cadastro btn-vermelho">Deletar</button>
-                </div>
                 <div class="cadastros">
-                    <h1 id="titulo">Usuários</h1>
+                    <div class="container-titulo">
+                        <h1 id="titulo">Usuários</h1>
+                        <button class="btn-area-cadastro" onclick="carregarTelaCadastroUsuario()">Novo usuário</button>
+                    </div>
+                    <div class="container-filtro">
+                        <label for="busca-usuario">Pesquisar usuário: </label>
+                        <input type="text" name="busca-usuario" id="busca-usuario">
+                    </div>
                     <div class="container-tabela">
                         <table class="tabela">
                             <thead>

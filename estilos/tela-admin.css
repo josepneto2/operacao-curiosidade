@@ -2,12 +2,6 @@
     justify-content: end;
 }
 
-.opcoes-admin {
-    display: flex;
-    justify-content: space-around;
-    
-}
-
 .cadastros {
     background-color: white;
     margin-top: 20px;
