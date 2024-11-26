@@ -1,66 +1,3 @@
-const dadosSistema = {
-    listaUsuarios: [
-        {
-            id: 1,
-            nome: "admin",
-            email: "admin@email.com",
-            senha: "admin",
-            deletado: false
-        },
-        {
-            id: 2,
-            nome: "neto",
-            email: "neto@email.com",
-            senha: "123",
-            deletado: false
-        },
-    ],
-    listaPessoas: [
-        {
-            id: 1,
-            nome: "Son Goku",
-            idade: 35,
-            email: "goku@email.com",
-            endereco: "Distrito Leste 439",
-            outrasInformacoes: "Seu poder é mais de 8 mil",
-            interesses: "Artes Marciais",
-            sentimentos: "sentimentos",
-            valores: "valores",
-            dataCadastro: "1/5/2024",
-            status: 'Ativo',
-            deletado: false
-        },
-        {
-            id: 2,
-            nome: "Virgil Super Choque",
-            idade: 15,
-            email: "superchoque@email.com",
-            endereco: "Dakota",
-            outrasInformacoes: "outras infos",
-            interesses: "interesses",
-            sentimentos: "sentimentos",
-            valores: "valores",
-            dataCadastro: "10/5/2024",
-            status: 'Inativo',
-            deletado: false
-        },
-        {
-            id: 3,
-            nome: "Logan Wolverine",
-            idade: 100,
-            email: "wolverine@email.com",
-            endereco: "Alberta, Canadá",
-            outrasInformacoes: "Inimigo do Dentes de Sabre",
-            interesses: "",
-            sentimentos: "",
-            valores: "",
-            dataCadastro: "14/11/2024",
-            status: 'Inativo',
-            deletado: false
-        },
-    ]
-};
-
 const usuario = {
     id: 0,
     nome: "",
@@ -84,50 +21,23 @@ const pessoa = {
     deletado: false
 };
 
-//----------------- TELA LOGIN -----------------
-const emailInput = document.querySelector("#email");
-const senhaInput = document.querySelector("#password");
-const aviso = document.querySelector('#aviso');
+//----------------- LOGOUT -----------------
+
 const btnSair = document.querySelector("#btn-sair");
 
-function carregarDados() {
-    const dadosExiste = localStorage.getItem('dadosSistema');
-    if(!dadosExiste){
-        localStorage.setItem('dadosSistema', JSON.stringify(dadosSistema));
-    }
+if(btnSair) {
+    btnSair.addEventListener('click', () => localStorage.removeItem("usuarioLogado"));
 }
 
-function realizarLogin(event) {
-    event.preventDefault();
-    let email = emailInput.value;
-    let senha = senhaInput.value;
-    const usuarioCadastrado = validarLoginUsuario(email, senha);
-    
-    if (!usuarioCadastrado) {
-        emailInput.focus();
-        emailInput.style.border = '2px solid red';
-        senhaInput.style.border = '2px solid red';
-        aviso.classList.remove('inativo');
-        return;
+//----------------- DADOS -----------------
+function obterDadosSistema() {
+    const dadosJson = localStorage.getItem('dadosSistema');
+    if(!dadosJson) {
+        return false;
     }
     
-    localStorage.setItem("usuarioLogado", JSON.stringify(usuarioCadastrado));
-    window.location.href = "pages/home.html";
-}
-
-let usuarios = obterUsuariosSistema();
-
-function validarLoginUsuario(email, senha) {
-    const usuarioEncontrado = usuarios.find(u => u.email === email);
-    if(!usuarioEncontrado) {
-        return null;
-    }
-    
-    if (usuarioEncontrado.email === email && usuarioEncontrado.senha === senha){
-        return usuarioEncontrado;
-    } else {
-        return null;
-    }
+    const dadosObj = JSON.parse(dadosJson);
+    return dadosObj;
 }
 
 function obterUsuariosSistema() {
@@ -140,23 +50,20 @@ function obterUsuariosSistema() {
     return dadosUsuarios;
 }
 
-function obterDadosSistema() {
-    const dadosJson = localStorage.getItem('dadosSistema');
-    if(!dadosJson) {
+function obterPessoasSistema() {
+    const dados = obterDadosSistema();
+    if(!dados) {
         return false;
     }
     
-    const dadosObj = JSON.parse(dadosJson);
-    return dadosObj;
+    const dadosPessoas = dados.listaPessoas;
+    return dadosPessoas;
 }
 
-function handleLogout() {
-    localStorage.removeItem("usuarioLogado");
-}
-
-if(btnSair) {
-    btnSair.addEventListener('click', handleLogout);
-}
+let dadosSistema = obterDadosSistema();
+let usuarios = obterUsuariosSistema();
+let pessoas = obterPessoasSistema();
+const pessoasSemDelete = pessoas.filter(p => p.deletado === false);
 
 //----------------- TELA HOME -----------------
 const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
@@ -179,16 +86,13 @@ const numPendencia = document.querySelector("#num-pendencia");
 const tabela = document.querySelector('.tabela');
 let tbody = document.getElementsByTagName('tbody')[0];
 
-let pessoas = obterPessoasSistema();
-const pessoasSemDelete = pessoas.filter(p => p.deletado === false);
-
 function carregarDadosHome() {
     numTotal.innerText = pessoasSemDelete.length;
     numMes.innerText = quantidadeCadastrosUltimoMes(pessoasSemDelete);
     numPendencia.innerText = quantidadeCadastrosPendentes(pessoasSemDelete);
     carregarTabela(pessoasSemDelete.reverse());
 
-    filtrarBusca(pessoas);
+    filtrarBusca(pessoasSemDelete, carregarTabela);
 }
 
 function quantidadeCadastrosPendentes(pessoas){
@@ -223,31 +127,15 @@ function obterMesCadastrado(pessoa) {
     return mes;
 }
 
-function filtrarBusca(pessoas) {
+function filtrarBusca(pessoas, carregarTabela) {
     const barraPesquisa = document.querySelector('#barra-pesquisa');
 
     barraPesquisa.addEventListener('input', function() {
         let termoPesquisado = barraPesquisa.value;
-        let busca = obterPessoasPesquisadas(termoPesquisado, pessoas);
+        let pessoasEncontradas = pessoas.filter(pessoa => pessoa.nome.includes(termoPesquisado));
         tbody.innerHTML = '';
-        carregarTabela(busca);
+        carregarTabela(pessoasEncontradas);
     });
-}
-
-function obterPessoasSistema() {
-    const dados = obterDadosSistema();
-    if(!dados) {
-        return false;
-    }
-    
-    const dadosPessoas = dados.listaPessoas;
-    return dadosPessoas;
-}
-
-function obterPessoasPesquisadas(busca, pessoas) {
-    let pessoasEncontradas = pessoas.filter(pessoa => pessoa.nome.includes(busca) && pessoa.deletado === false);
-    
-    return pessoasEncontradas;
 }
 
 function carregarTabela(pessoas) {
@@ -287,7 +175,7 @@ function carregarTelaHome() {
 function carregarDadosCadastro() { 
     carregarTabela(pessoasSemDelete);
 
-    filtrarBusca(pessoas);
+    filtrarBusca(pessoasSemDelete, carregarTabela);
 }
 
 function carregarTelaCadastro() {
@@ -420,14 +308,15 @@ function deletarPessoa() {
 }
 
 //----------------- TELA RELATÓRIOS -----------------
+function carregarTelaRelatorios() {
+    window.location.href = "./relatorios.html";
+}
+
 const containerLista = document.querySelector('.container-lista');
 const containerTabela = document.querySelector('.container-tabela');
 const btnImprimir = document.querySelector('#btn-imprimir');
 let tituloLista = document.querySelector('#titulo');
 
-function carregarTelaRelatorios() {
-    window.location.href = "./relatorios.html";
-}
 
 function carregarListaPessoas() {
     tituloLista.innerText += '  >  Lista de Pessoas';
@@ -436,7 +325,7 @@ function carregarListaPessoas() {
     btnImprimir.classList.remove('inativo');
     carregarTabela(pessoasSemDelete);
     
-    filtrarBusca(pessoas);
+    filtrarBusca(pessoasSemDelete, carregarTabela);
 }
 
 function imprimir() {
@@ -453,7 +342,7 @@ function carregarTelaAdmin() {
 function carregarAdmin() {
     carregarTabelaUsuarios(ususariosSemDelete)
     
-    buscarUsuario(ususariosSemDelete);
+    buscarUsuario(ususariosSemDelete, carregarTabelaUsuarios);
 }
 
 function carregarTabelaUsuarios(usuarios) {
@@ -470,6 +359,8 @@ function carregarTabelaUsuarios(usuarios) {
         tbody.appendChild(tr);
     });
 }
+
+//----------------- TELA ADMIN - CADASTRAR USUÁRIO -----------------
 
 function carregarTelaCadastroUsuario() {
     window.location.href = "./cadastro-usuario.html";
@@ -565,21 +456,15 @@ function carregarDadosEditarUsuario() {
     confirmaSenha.value = usuarioParaEditar.senha;
 }
 
-function buscarUsuario(usuarios) {
+function buscarUsuario(usuarios, carregarTabelaUsuarios) {
     const barraPesquisa = document.querySelector('#busca-usuario');
     
     barraPesquisa.addEventListener('input', function() {
         let termoPesquisado = barraPesquisa.value;
-        let usuariosEncontrados = obterUsuariosPesquisados(termoPesquisado, usuarios)
+        let usuariosEncontrados = usuarios.filter(usuario => usuario.nome.includes(termoPesquisado) || usuario.email.includes(termoPesquisado));
             tbody.innerHTML = '';
             carregarTabelaUsuarios(usuariosEncontrados);
     });
-}
-
-function obterUsuariosPesquisados(busca, usuarios) {
-    let usuariosEncontrados = usuarios.filter(usuario => usuario.nome.includes(busca) || usuario.email.includes(busca));
-    
-    return usuariosEncontrados;
 }
 
 function editarUsuario(event) {
