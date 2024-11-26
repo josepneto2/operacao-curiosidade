@@ -15,5 +15,7 @@ ou
 
 Faça o download do projeto para utilizar a hospedagem local (localhost) e inicie o projeto através da página index.html
 
+**Obs: caso limpe o localstorage ou está acessando sistema pela primeira vez, atualize a página!(f5)
+
 ### Pré equisitos
 Utilize o email: `admin@email.com` e a senha: `admin` para acessar a aplicação
