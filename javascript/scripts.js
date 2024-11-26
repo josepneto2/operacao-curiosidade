@@ -70,7 +70,7 @@ const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
 
 const opcaoAdm = document.querySelector('.opcao-admin');
 if(usuarioLogado) {
-    let adminOn = usuarioLogado.nome === 'admin' ? 'flex' : 'none'
+    let adminOn = usuarioLogado.nome === 'Admin' ? 'flex' : 'none'
     opcaoAdm.style.display = adminOn;
 }
 
@@ -403,6 +403,12 @@ function cadastrarUsuario(event) {
         alert('Cadastro realizado com sucesso!');
     } else {
         let usuarioParaEditar = JSON.parse(localStorage.getItem('editarUsuario'));
+        if (usuarioParaEditar.nome === 'Admin') {
+            localStorage.removeItem('editarUsuario');
+            alert('ADMIN não pode ser editado!');
+            return;
+        }
+
         usuario.id = usuarioParaEditar.id;
         
         const posicao = usuarioParaEditar.id - 1;
@@ -474,8 +480,14 @@ function editarUsuario(event) {
     window.location.href = "./editar-usuario.html";
 }
 
-function deletarUsuario() {
+function deletarUsuario(event) {
     let usuarioParaDeletar = JSON.parse(localStorage.getItem('editarUsuario'));
+    if (usuarioParaDeletar.nome === 'Admin') {
+        localStorage.removeItem('editarUsuario');
+        alert('ADMIN não pode ser deletado!');
+        return;
+    }
+    
     usuarioParaDeletar.deletado = true;
 
     const posicao = usuarioParaDeletar.id - 1;

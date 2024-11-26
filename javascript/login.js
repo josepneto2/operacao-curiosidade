@@ -2,14 +2,14 @@ const dadosSistema = {
     listaUsuarios: [
         {
             id: 1,
-            nome: "admin",
+            nome: "Admin",
             email: "admin@email.com",
             senha: "admin",
             deletado: false
         },
         {
             id: 2,
-            nome: "neto",
+            nome: "Neto",
             email: "neto@email.com",
             senha: "123",
             deletado: false
