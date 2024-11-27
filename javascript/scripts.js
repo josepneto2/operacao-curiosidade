@@ -16,7 +16,7 @@ const pessoa = {
     interesses: "",
     sentimentos: "",
     valores: "",
-    dataCadastro: 0,
+    dataCadastro: "",
     status: "",
     deletado: false
 };
@@ -66,6 +66,10 @@ let pessoas = obterPessoasSistema();
 const pessoasSemDelete = pessoas.filter(p => p.deletado === false);
 
 //----------------- TELA HOME -----------------
+function carregarTelaHome() {
+    window.location.href = "./home.html";
+}
+
 const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
 
 const opcaoAdm = document.querySelector('.opcao-admin');
@@ -95,18 +99,6 @@ function carregarDadosHome() {
     filtrarBusca(pessoasSemDelete, carregarTabela);
 }
 
-function quantidadeCadastrosPendentes(pessoas){
-    let totalPendentes = 0;
-    pessoas.forEach(pessoa => {
-        const valores = Object.values(pessoa);
-        let vazio = valores.some(valor => valor === "");
-        if(vazio) {
-            totalPendentes++;
-        }
-    })
-    return totalPendentes;
-}
-
 function quantidadeCadastrosUltimoMes(pessoas) {
     const mesAtual = new Date().getMonth();
     let cadastrosUltimoMes = 0;
@@ -127,15 +119,16 @@ function obterMesCadastrado(pessoa) {
     return mes;
 }
 
-function filtrarBusca(pessoas, carregarTabela) {
-    const barraPesquisa = document.querySelector('#barra-pesquisa');
-
-    barraPesquisa.addEventListener('input', function() {
-        let termoPesquisado = barraPesquisa.value;
-        let pessoasEncontradas = pessoas.filter(pessoa => pessoa.nome.includes(termoPesquisado));
-        tbody.innerHTML = '';
-        carregarTabela(pessoasEncontradas);
-    });
+function quantidadeCadastrosPendentes(pessoas){
+    let totalPendentes = 0;
+    pessoas.forEach(pessoa => {
+        const valores = Object.values(pessoa);
+        let vazio = valores.some(valor => valor === "");
+        if(vazio) {
+            totalPendentes++;
+        }
+    })
+    return totalPendentes;
 }
 
 function carregarTabela(pessoas) {
@@ -160,6 +153,17 @@ function carregarTabela(pessoas) {
     });
 }
 
+function filtrarBusca(pessoas, carregarTabela) {
+    const barraPesquisa = document.querySelector('#barra-pesquisa');
+
+    barraPesquisa.addEventListener('input', function() {
+        let termoPesquisado = barraPesquisa.value;
+        let pessoasEncontradas = pessoas.filter(pessoa => pessoa.nome.includes(termoPesquisado));
+        tbody.innerHTML = '';
+        carregarTabela(pessoasEncontradas);
+    });
+}
+
 function editarPessoa(event) {
     let pessoaParaEditar = event.target.innerText;
     pessoaParaEditar = pessoas.find(p => p.nome === pessoaParaEditar || p. email === pessoaParaEditar);
@@ -167,19 +171,15 @@ function editarPessoa(event) {
     window.location.href = "./editar-pessoa.html";
 }
 
-function carregarTelaHome() {
-    window.location.href = "./home.html";
+//----------------- TELA CADASTRO -----------------
+function carregarTelaCadastro() {
+    window.location.href = "./cadastro.html";
 }
 
-//----------------- TELA CADASTRO -----------------
 function carregarDadosCadastro() { 
     carregarTabela(pessoasSemDelete);
 
     filtrarBusca(pessoasSemDelete, carregarTabela);
-}
-
-function carregarTelaCadastro() {
-    window.location.href = "./cadastro.html";
 }
 
 //----------------- TELA NOVO CADASTRO -----------------
@@ -217,6 +217,12 @@ function cadastrarPessoa(event) {
         erroInput(email);
         return;
     }
+
+    if (idade.value < 0 || idade.value > 100) {
+        event.preventDefault();
+        erroInput(idade);
+        return;
+    }
     
     pessoa.nome = nome.value;
     pessoa.idade = Number(idade.value);
@@ -228,12 +234,13 @@ function cadastrarPessoa(event) {
     pessoa.valores = valores.value;
     pessoa.dataCadastro = new Date().toLocaleDateString();
     pessoa.status = statusValor;
-    
+
     const pagina = window.location.href;
     const paginaAtual = pagina.split('/').pop();
     
     if(paginaAtual === "novo-cadastro.html"){
         pessoa.id = pessoas.length + 1;
+
         pessoas.push(pessoa);
         dadosSistema.listaPessoas = pessoas;
         localStorage.setItem('dadosSistema', JSON.stringify(dadosSistema));
@@ -242,6 +249,7 @@ function cadastrarPessoa(event) {
     } else {
         let pessoaParaEditar = JSON.parse(localStorage.getItem('editarPessoa'));
         pessoa.id = pessoaParaEditar.id;
+        pessoa.dataCadastro = pessoaParaEditar.dataCadastro 
         
         const posicao = pessoa.id - 1;
         pessoas.splice(posicao, 1, pessoa);
@@ -257,6 +265,10 @@ function erroInput(input) {
     input.focus();
     input.value = "";
     input.style.border = '1px solid red';
+    if (input.id === "idade"){
+        input.setAttribute('placeholder', '*Idade inválida');
+        return;
+    }
     input.setAttribute('placeholder', '*O campo deve ser preenchido corretamente');
 }
 
@@ -317,7 +329,6 @@ const containerTabela = document.querySelector('.container-tabela');
 const btnImprimir = document.querySelector('#btn-imprimir');
 let tituloLista = document.querySelector('#titulo');
 
-
 function carregarListaPessoas() {
     tituloLista.innerText += '  >  Lista de Pessoas';
     containerLista.classList.add('inativo');
@@ -333,11 +344,11 @@ function imprimir() {
 }
 
 //----------------- TELA ADMIN -----------------
-let ususariosSemDelete = usuarios.filter(u => u.deletado === false);
-
 function carregarTelaAdmin() {
     window.location.href = "./admin.html";
 }
+
+let ususariosSemDelete = usuarios.filter(u => u.deletado === false);
 
 function carregarAdmin() {
     carregarTabelaUsuarios(ususariosSemDelete)
@@ -361,7 +372,6 @@ function carregarTabelaUsuarios(usuarios) {
 }
 
 //----------------- TELA ADMIN - CADASTRAR USUÁRIO -----------------
-
 function carregarTelaCadastroUsuario() {
     window.location.href = "./cadastro-usuario.html";
 }
