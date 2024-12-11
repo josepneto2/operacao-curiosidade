@@ -17,7 +17,7 @@ const pessoa = {
     sentimentos: "",
     valores: "",
     dataCadastro: "",
-    status: "",
+    ativo: false,
     deletado: false
 };
 
@@ -94,8 +94,8 @@ function carregarDadosHome() {
     numTotal.innerText = pessoasSemDelete.length;
     numMes.innerText = quantidadeCadastrosUltimoMes(pessoasSemDelete);
     numPendencia.innerText = quantidadeCadastrosPendentes(pessoasSemDelete);
-    carregarTabela(pessoasSemDelete.reverse());
 
+    carregarTabela();
     filtrarBusca(pessoasSemDelete, carregarTabela);
 }
 
@@ -131,7 +131,11 @@ function quantidadeCadastrosPendentes(pessoas){
     return totalPendentes;
 }
 
-function carregarTabela(pessoas) {
+async function carregarTabela() {
+    const pessoas = await fetch('https://localhost:7136/api/Pessoas')
+        .then(response => response.json())
+        .catch(err => console.error(err));
+        
     pessoas.forEach((pessoa) => {
         const tdNome = document.createElement('td');
         tdNome.innerText = pessoa.nome;
@@ -140,8 +144,10 @@ function carregarTabela(pessoas) {
         const tdStatus = document.createElement('td');
         tdStatus.innerText = pessoa.status;
         
-        if (pessoa.status === 'Inativo') {
+        tdStatus.innerText = 'Ativo';
+        if (pessoa.ativo === false) {
             tdStatus.id = 'statusInativo';
+            tdStatus.innerText = 'Inativo';
         }
 
         const tr = document.createElement('tr');
@@ -165,9 +171,9 @@ function filtrarBusca(pessoas, carregarTabela) {
 }
 
 function editarPessoa(event) {
+    event.preventDefault()
     let pessoaParaEditar = event.target.innerText;
-    pessoaParaEditar = pessoas.find(p => p.nome === pessoaParaEditar || p. email === pessoaParaEditar);
-    localStorage.setItem('editarPessoa', JSON.stringify(pessoaParaEditar));
+    localStorage.setItem('editarPessoa', pessoaParaEditar);
     window.location.href = "./editar-pessoa.html";
 }
 
@@ -177,7 +183,7 @@ function carregarTelaCadastro() {
 }
 
 function carregarDadosCadastro() { 
-    carregarTabela(pessoasSemDelete);
+    carregarTabela();
 
     filtrarBusca(pessoasSemDelete, carregarTabela);
 }
@@ -198,10 +204,10 @@ const valores = document.querySelector('#valores');
 const statusRadios = document.getElementsByName('status');
 
 function cadastrarPessoa(event) {
-    let statusValor = '';
+    let statusValor = false;
     for(let i = 0; i < statusRadios.length; i++) {
-        if(statusRadios[i].checked) {
-            statusValor = statusRadios[i].value;
+        if(statusRadios[0].checked) {
+            statusValor = true;
             break;
         }
     }
@@ -232,18 +238,24 @@ function cadastrarPessoa(event) {
     pessoa.interesses = interesses.value;
     pessoa.sentimentos = sentimentos.value;
     pessoa.valores = valores.value;
-    pessoa.dataCadastro = new Date().toLocaleDateString();
-    pessoa.status = statusValor;
+    pessoa.dataCadastro = "2024-12-11";
+    pessoa.ativo = statusValor;
 
     const pagina = window.location.href;
     const paginaAtual = pagina.split('/').pop();
     
     if(paginaAtual === "novo-cadastro.html"){
-        pessoa.id = pessoas.length + 1;
-
-        pessoas.push(pessoa);
-        dadosSistema.listaPessoas = pessoas;
-        localStorage.setItem('dadosSistema', JSON.stringify(dadosSistema));
+        fetch('https://localhost:7136/api/Pessoas', {
+            method: 'POST',
+            headers: {
+                Accept: 'application.json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(pessoa),
+        })
+            .then(response => response.json())
+            .then(dados => console.log(dados))
+            .catch(err => console.error(err));
         
         alert('Cadastro realizado com sucesso!');
     } else {
@@ -289,10 +301,22 @@ function verificarEmail(email) {
 }
 
 //----------------- TELA EDITAR CADASTRO -----------------
-function carregarDadosEdicao() {
-    let pessoaParaEditar = JSON.parse(localStorage.getItem('editarPessoa'));
+async function buscarPessoa() {
+     const dados = await fetch(`https://localhost:7136/api/Pessoas/2`)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Falha na requisição');
+        }
+        return response.json();
+    })
+    return dados;
+}
+
+async function carregarDadosEdicao() {
+    let pessoaParaEditar = await buscarPessoa();
+    console.log(pessoaParaEditar)
     
-    if(pessoaParaEditar.status === 'Inativo') {
+    if(pessoaParaEditar.ativo === false) {
         statusRadios[1].setAttribute('checked', 'true');
     }
     
@@ -334,7 +358,7 @@ function carregarListaPessoas() {
     containerLista.classList.add('inativo');
     containerTabela.classList.remove('inativo');
     btnImprimir.classList.remove('inativo');
-    carregarTabela(pessoasSemDelete);
+    carregarTabela();
     
     filtrarBusca(pessoasSemDelete, carregarTabela);
 }

@@ -27,7 +27,7 @@ const dadosSistema = {
             sentimentos: "sentimentos",
             valores: "valores",
             dataCadastro: "1/5/2024",
-            status: 'Ativo',
+            ativo: true,
             deletado: false
         },
         {
@@ -41,7 +41,7 @@ const dadosSistema = {
             sentimentos: "sentimentos",
             valores: "valores",
             dataCadastro: "10/5/2024",
-            status: 'Inativo',
+            ativo: false,
             deletado: false
         },
         {
@@ -55,7 +55,7 @@ const dadosSistema = {
             sentimentos: "",
             valores: "",
             dataCadastro: "14/11/2024",
-            status: 'Inativo',
+            ativo: false,
             deletado: false
         },
     ]
