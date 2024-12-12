@@ -90,45 +90,21 @@ const numPendencia = document.querySelector("#num-pendencia");
 const tabela = document.querySelector('.tabela');
 let tbody = document.getElementsByTagName('tbody')[0];
 
-function carregarDadosHome() {
-    numTotal.innerText = pessoasSemDelete.length;
-    numMes.innerText = quantidadeCadastrosUltimoMes(pessoasSemDelete);
-    numPendencia.innerText = quantidadeCadastrosPendentes(pessoasSemDelete);
+async function carregarDadosHome() {
+    const quantidadeTotalCadatros = await fetch('https://localhost:7136/api/Pessoas/quantidadeCadastros')
+    .then(response => response.json());
+    const quantidadeCadatrosUltimoMes = await fetch('https://localhost:7136/api/Pessoas/quantidadeCadastrosUltimoMes')
+    .then(response => response.json());
+    
+    const quantidadeCadastrosPendentes = await fetch('https://localhost:7136/api/Pessoas/quantidadeCadastrosPendentes')
+    .then(response => response.json());
+
+    numTotal.innerText = quantidadeTotalCadatros;
+    numMes.innerText = quantidadeCadatrosUltimoMes;
+    numPendencia.innerText = quantidadeCadastrosPendentes;
 
     carregarTabela();
     filtrarBusca(pessoasSemDelete, carregarTabela);
-}
-
-function quantidadeCadastrosUltimoMes(pessoas) {
-    const mesAtual = new Date().getMonth();
-    let cadastrosUltimoMes = 0;
-    pessoas.forEach(pessoa => {
-        const mesCadastro = obterMesCadastrado(pessoa) - 1;
-        if (mesCadastro === mesAtual) {
-            cadastrosUltimoMes++;
-        }
-    })
-    return cadastrosUltimoMes;
-}
-
-function obterMesCadastrado(pessoa) {
-    const dataCadastro = pessoa.dataCadastro;
-    const dataSeparada = dataCadastro.split("/");
-    const mes = dataSeparada[1];
-
-    return mes;
-}
-
-function quantidadeCadastrosPendentes(pessoas){
-    let totalPendentes = 0;
-    pessoas.forEach(pessoa => {
-        const valores = Object.values(pessoa);
-        let vazio = valores.some(valor => valor === "");
-        if(vazio) {
-            totalPendentes++;
-        }
-    })
-    return totalPendentes;
 }
 
 async function carregarTabela() {
@@ -146,6 +122,8 @@ async function carregarTabela() {
         
         tdStatus.innerText = 'Ativo';
         if (pessoa.ativo === false) {
+            tdNome.id = 'statusInativo';
+            tdEmail.id = 'statusInativo';
             tdStatus.id = 'statusInativo';
             tdStatus.innerText = 'Inativo';
         }
