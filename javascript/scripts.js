@@ -91,17 +91,12 @@ const tabela = document.querySelector('.tabela');
 let tbody = document.getElementsByTagName('tbody')[0];
 
 async function carregarDadosHome() {
-    const quantidadeTotalCadatros = await fetch('https://localhost:7136/api/Pessoas/quantidadeCadastros')
-    .then(response => response.json());
-    const quantidadeCadatrosUltimoMes = await fetch('https://localhost:7136/api/Pessoas/quantidadeCadastrosUltimoMes')
-    .then(response => response.json());
-    
-    const quantidadeCadastrosPendentes = await fetch('https://localhost:7136/api/Pessoas/quantidadeCadastrosPendentes')
+    const dashboardInfos = await fetch('https://localhost:7136/api/Pessoas/dashboardInfos')
     .then(response => response.json());
 
-    numTotal.innerText = quantidadeTotalCadatros;
-    numMes.innerText = quantidadeCadatrosUltimoMes;
-    numPendencia.innerText = quantidadeCadastrosPendentes;
+    numTotal.innerText = dashboardInfos.totalCadastros;
+    numMes.innerText = dashboardInfos.cadastrosUltimoMes;
+    numPendencia.innerText = dashboardInfos.cadastrosPendentes;
 
     carregarTabela();
     filtrarBusca(pessoasSemDelete, carregarTabela);
