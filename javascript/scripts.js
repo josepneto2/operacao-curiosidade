@@ -177,6 +177,15 @@ function editarPessoa(event) {
     window.location.href = "./editar-pessoa.html";
 }
 
+async function editarPessoa(event) {
+    const pessoaParaEditar = event.target.innerText;
+    const pessoa = await fetch(`https://localhost:7136/api/Pessoas/${pessoaParaEditar}`)
+        .then(response => response.json());
+
+    localStorage.setItem('editarPessoa', JSON.stringify(pessoa));
+    window.location.href = "./editar-pessoa.html";
+}
+
 //----------------- TELA CADASTRO -----------------
 function carregarTelaCadastro() {
     window.location.href = "./cadastro.html";
@@ -254,7 +263,6 @@ function cadastrarPessoa(event) {
             body: JSON.stringify(pessoa),
         })
             .then(response => response.json())
-            .then(dados => console.log(dados))
             .catch(err => console.error(err));
         
         alert('Cadastro realizado com sucesso!');
@@ -262,11 +270,18 @@ function cadastrarPessoa(event) {
         let pessoaParaEditar = JSON.parse(localStorage.getItem('editarPessoa'));
         pessoa.id = pessoaParaEditar.id;
         pessoa.dataCadastro = pessoaParaEditar.dataCadastro 
-        
-        const posicao = pessoa.id - 1;
-        pessoas.splice(posicao, 1, pessoa);
-        dadosSistema.listaPessoas = pessoas;
-        localStorage.setItem('dadosSistema', JSON.stringify(dadosSistema));
+
+        fetch(`https://localhost:7136/api/Pessoas/${pessoaParaEditar.id}`, {
+            method: 'PUT',
+            headers: {
+                Accept: 'application.json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(pessoa),
+        })
+            .then(response => response.json())
+            .catch(err => console.error(err));
+
         localStorage.removeItem('editarPessoa');
         
         alert('Cadastro alterado com sucesso!');
@@ -301,21 +316,9 @@ function verificarEmail(email) {
 }
 
 //----------------- TELA EDITAR CADASTRO -----------------
-async function buscarPessoa() {
-     const dados = await fetch(`https://localhost:7136/api/Pessoas/2`)
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Falha na requisição');
-        }
-        return response.json();
-    })
-    return dados;
-}
+function carregarDadosEdicao() {
+    let pessoaParaEditar = JSON.parse(localStorage.getItem('editarPessoa'));
 
-async function carregarDadosEdicao() {
-    let pessoaParaEditar = await buscarPessoa();
-    console.log(pessoaParaEditar)
-    
     if(pessoaParaEditar.ativo === false) {
         statusRadios[1].setAttribute('checked', 'true');
     }
@@ -332,12 +335,11 @@ async function carregarDadosEdicao() {
 
 function deletarPessoa() {
     let pessoaParaDeletar = JSON.parse(localStorage.getItem('editarPessoa'));
-    pessoaParaDeletar.deletado = true;
-    
-    const posicao = pessoaParaDeletar.id - 1;
-    pessoas.splice(posicao, 1, pessoaParaDeletar);
-    dadosSistema.listaPessoas = pessoas;
-    localStorage.setItem('dadosSistema', JSON.stringify(dadosSistema));
+    fetch(`https://localhost:7136/api/Pessoas/${pessoaParaDeletar.id}`, {
+        method: 'DELETE'
+    })
+        .then(response => response.json())
+        .catch(err => console.error(err));
     localStorage.removeItem('editarPessoa');
     
     alert('Cadastro deletado com sucesso!');
