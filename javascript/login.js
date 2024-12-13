@@ -14,50 +14,6 @@ const dadosSistema = {
             senha: "123",
             deletado: false
         },
-    ],
-    listaPessoas: [
-        {
-            id: 1,
-            nome: "Son Goku",
-            idade: 35,
-            email: "goku@email.com",
-            endereco: "Distrito Leste 439",
-            outrasInformacoes: "Seu poder é mais de 8 mil",
-            interesses: "Artes Marciais",
-            sentimentos: "sentimentos",
-            valores: "valores",
-            dataCadastro: "1/5/2024",
-            ativo: true,
-            deletado: false
-        },
-        {
-            id: 2,
-            nome: "Virgil Super Choque",
-            idade: 15,
-            email: "superchoque@email.com",
-            endereco: "Dakota",
-            outrasInformacoes: "outras infos",
-            interesses: "interesses",
-            sentimentos: "sentimentos",
-            valores: "valores",
-            dataCadastro: "10/5/2024",
-            ativo: false,
-            deletado: false
-        },
-        {
-            id: 3,
-            nome: "Logan Wolverine",
-            idade: 100,
-            email: "wolverine@email.com",
-            endereco: "Alberta, Canadá",
-            outrasInformacoes: "Inimigo do Dentes de Sabre",
-            interesses: "",
-            sentimentos: "",
-            valores: "",
-            dataCadastro: "14/11/2024",
-            ativo: false,
-            deletado: false
-        },
     ]
 };
 

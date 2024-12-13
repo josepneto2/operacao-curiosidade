@@ -473,13 +473,14 @@ function deletarUsuario(event) {
         alert('ADMIN não pode ser deletado!');
         return;
     }
-    
-    usuarioParaDeletar.deletado = true;
 
-    const posicao = usuarioParaDeletar.id - 1;
-    usuarios.splice(posicao, 1, usuarioParaDeletar);
-    dadosSistema.listaUsuarios = usuarios;
-    localStorage.setItem('dadosSistema', JSON.stringify(dadosSistema));
+    fetch(`https://localhost:7136/api/Usuarios/${usuarioParaDeletar.id}`, {
+        method: 'DELETE'
+    })
+        .then(response => response.json())
+        .catch(err => console.error(err));
+
+    usuarioParaDeletar.deletado = true;
     localStorage.removeItem('editarUsuario');
     
     alert('Cadastro deletado com sucesso!');
