@@ -29,42 +29,6 @@ if(btnSair) {
     btnSair.addEventListener('click', () => localStorage.removeItem("usuarioLogado"));
 }
 
-//----------------- DADOS -----------------
-function obterDadosSistema() {
-    const dadosJson = localStorage.getItem('dadosSistema');
-    if(!dadosJson) {
-        return false;
-    }
-    
-    const dadosObj = JSON.parse(dadosJson);
-    return dadosObj;
-}
-
-function obterUsuariosSistema() {
-    const dados = obterDadosSistema();
-    if(!dados) {
-        return false;
-    }
-    
-    const dadosUsuarios = dados.listaUsuarios;
-    return dadosUsuarios;
-}
-
-function obterPessoasSistema() {
-    const dados = obterDadosSistema();
-    if(!dados) {
-        return false;
-    }
-    
-    const dadosPessoas = dados.listaPessoas;
-    return dadosPessoas;
-}
-
-let dadosSistema = obterDadosSistema();
-let usuarios = obterUsuariosSistema();
-let pessoas = obterPessoasSistema();
-const pessoasSemDelete = pessoas.filter(p => p.deletado === false);
-
 //----------------- TELA HOME -----------------
 function carregarTelaHome() {
     window.location.href = "./home.html";
@@ -92,20 +56,20 @@ let tbody = document.getElementsByTagName('tbody')[0];
 
 async function carregarDadosHome() {
     const dashboardInfos = await fetch('https://localhost:7136/api/Pessoas/dashboardInfos')
-    .then(response => response.json());
+        .then(response => response.json());
 
     numTotal.innerText = dashboardInfos.totalCadastros;
     numMes.innerText = dashboardInfos.cadastrosUltimoMes;
     numPendencia.innerText = dashboardInfos.cadastrosPendentes;
 
-    carregarTabela();
-    filtrarBusca(pessoasSemDelete, carregarTabela);
-}
-
-async function carregarTabela() {
-    const pessoas = await fetch('https://localhost:7136/api/Pessoas')
+    const pessoasApi = await fetch('https://localhost:7136/api/Pessoas')
         .then(response => response.json())
         .catch(err => console.error(err));
+
+    carregarTabela(pessoasApi);
+}
+
+function carregarTabela(pessoas) {
         
     pessoas.forEach((pessoa) => {
         const tdNome = document.createElement('td');
@@ -132,22 +96,17 @@ async function carregarTabela() {
     });
 }
 
-function filtrarBusca(pessoas, carregarTabela) {
+async function realizarPesquisa() {
     const barraPesquisa = document.querySelector('#barra-pesquisa');
+    let termoPesquisado = barraPesquisa.value;
 
-    barraPesquisa.addEventListener('input', function() {
-        let termoPesquisado = barraPesquisa.value;
-        let pessoasEncontradas = pessoas.filter(pessoa => pessoa.nome.includes(termoPesquisado));
-        tbody.innerHTML = '';
-        carregarTabela(pessoasEncontradas);
-    });
-}
+    const pessoasEncontradasApi = await fetch(`https://localhost:7136/api/Pessoas/filtrar/${termoPesquisado}`)
+        .then(response => response.json())
+        .catch(err => console.error(err));
+    tbody.innerHTML = '';
 
-function editarPessoa(event) {
-    event.preventDefault()
-    let pessoaParaEditar = event.target.innerText;
-    localStorage.setItem('editarPessoa', pessoaParaEditar);
-    window.location.href = "./editar-pessoa.html";
+    carregarTabela(pessoasEncontradasApi);
+
 }
 
 async function editarPessoa(event) {
@@ -164,10 +123,12 @@ function carregarTelaCadastro() {
     window.location.href = "./cadastro.html";
 }
 
-function carregarDadosCadastro() { 
-    carregarTabela();
+async function carregarDadosCadastro() {
+    const pessoasApi = await fetch('https://localhost:7136/api/Pessoas')
+        .then(response => response.json())
+        .catch(err => console.error(err));
 
-    filtrarBusca(pessoasSemDelete, carregarTabela);
+    carregarTabela(pessoasApi);
 }
 
 //----------------- TELA NOVO CADASTRO -----------------
@@ -236,7 +197,6 @@ function cadastrarPessoa(event) {
             body: JSON.stringify(pessoa),
         })
             .then(response => response.json())
-            .catch(err => console.error(err));
         
         alert('Cadastro realizado com sucesso!');
     } else {
@@ -328,14 +288,17 @@ const containerTabela = document.querySelector('.container-tabela');
 const btnImprimir = document.querySelector('#btn-imprimir');
 let tituloLista = document.querySelector('#titulo');
 
-function carregarListaPessoas() {
+async function carregarListaPessoas() {
     tituloLista.innerText += '  >  Lista de Pessoas';
     containerLista.classList.add('inativo');
     containerTabela.classList.remove('inativo');
     btnImprimir.classList.remove('inativo');
-    carregarTabela();
     
-    filtrarBusca(pessoasSemDelete, carregarTabela);
+    const pessoasApi = await fetch('https://localhost:7136/api/Pessoas')
+        .then(response => response.json())
+        .catch(err => console.error(err));
+
+    carregarTabela(pessoasApi);
 }
 
 function imprimir() {
@@ -347,12 +310,11 @@ function carregarTelaAdmin() {
     window.location.href = "./admin.html";
 }
 
-let ususariosSemDelete = usuarios.filter(u => u.deletado === false);
-
-function carregarAdmin() {
-    carregarTabelaUsuarios(ususariosSemDelete)
-    
-    buscarUsuario(ususariosSemDelete, carregarTabelaUsuarios);
+async function carregarAdmin() {
+    const usuariosApi = await fetch('https://localhost:7136/api/Usuarios')
+        .then(response => response.json())
+        .catch(err => console.error(err));
+    carregarTabelaUsuarios(usuariosApi)
 }
 
 function carregarTabelaUsuarios(usuarios) {
@@ -404,10 +366,15 @@ function cadastrarUsuario(event) {
     const paginaAtual = pagina.split('/').pop();
     
     if(paginaAtual === "cadastro-usuario.html"){
-        usuario.id = usuarios.length + 1;
-        usuarios.push(usuario);
-        dadosSistema.listaUsuarios = usuarios;
-        localStorage.setItem('dadosSistema', JSON.stringify(dadosSistema));
+        fetch('https://localhost:7136/api/Usuarios', {
+            method: 'POST',
+            headers: {
+                Accept: 'application.json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(usuario),
+        })
+            .then(response => response.json())
         
         alert('Cadastro realizado com sucesso!');
     } else {
@@ -419,11 +386,18 @@ function cadastrarUsuario(event) {
         }
 
         usuario.id = usuarioParaEditar.id;
-        
-        const posicao = usuarioParaEditar.id - 1;
-        usuarios.splice(posicao, 1, usuario);
-        dadosSistema.listaUsuarios = usuarios;
-        localStorage.setItem('dadosSistema', JSON.stringify(dadosSistema));
+
+        fetch(`https://localhost:7136/api/Usuarios/${usuarioParaEditar.id}`, {
+            method: 'PUT',
+            headers: {
+                Accept: 'application.json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(usuario),
+        })
+            .then(response => response.json())
+            .catch(err => console.error(err));
+
         localStorage.removeItem('editarUsuario');
         
         alert('Cadastro alterado com sucesso!');
@@ -471,21 +445,24 @@ function carregarDadosEditarUsuario() {
     confirmaSenha.value = usuarioParaEditar.senha;
 }
 
-function buscarUsuario(usuarios, carregarTabelaUsuarios) {
-    const barraPesquisa = document.querySelector('#busca-usuario');
-    
-    barraPesquisa.addEventListener('input', function() {
-        let termoPesquisado = barraPesquisa.value;
-        let usuariosEncontrados = usuarios.filter(usuario => usuario.nome.includes(termoPesquisado) || usuario.email.includes(termoPesquisado));
-            tbody.innerHTML = '';
-            carregarTabelaUsuarios(usuariosEncontrados);
-    });
+async function realizarPesquisaUsuario() {
+    const barraPesquisa = document.querySelector('#barra-pesquisa');
+    let termoPesquisado = barraPesquisa.value;
+
+    const usuariosEncontrados = await fetch(`https://localhost:7136/api/Usuarios/filtrar/${termoPesquisado}`)
+        .then(response => response.json())
+        .catch(err => console.error(err));
+    tbody.innerHTML = '';
+
+    carregarTabelaUsuarios(usuariosEncontrados);
 }
 
-function editarUsuario(event) {
+async function editarUsuario(event) {
     let usuarioParaEditar = event.target.innerText;
-    usuarioParaEditar = usuarios.find(u => u.nome === usuarioParaEditar || u. email === usuarioParaEditar);
-    localStorage.setItem('editarUsuario', JSON.stringify(usuarioParaEditar));
+    const usuario = await fetch(`https://localhost:7136/api/Usuarios/${usuarioParaEditar}`)
+        .then(response => response.json());
+
+    localStorage.setItem('editarUsuario', JSON.stringify(usuario));
     window.location.href = "./editar-usuario.html";
 }
 

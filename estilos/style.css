@@ -104,14 +104,33 @@ a {
     border-radius: 5px;
 }
 
+.conteudo .container-pesquisa {
+    display: flex;
+}
+
 .conteudo .container-pesquisa > input{
     padding: 10px;
     margin-left: 20px;
     border-radius: 5px;
-    width: 450px;
+    width: 400px;
     border: none;
     font-size: 0.8em;
     background-color: #f8f8f8;
+}
+
+#btn-pesquisar{
+    border: none;
+    margin-left: -30px;
+    background-color: #f8f8f8;
+    padding: 0 10px;
+    border-radius: 0 50px 50px 0;
+
+}
+
+#btn-pesquisar:hover {
+    cursor: pointer;
+    background-color: #c7d7ff;
+    border-radius: 0 50px 50px 0;
 }
 
 .conteudo .dados-usuario{
